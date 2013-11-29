@@ -10,6 +10,7 @@
 # this cvs module is checked out.
 #
 IPKG-OPT_REPOSITORY=:pserver:anoncvs@anoncvs.handhelds.org
+
 IPKG-OPT_DIR=ipkg-opt
 IPKG-OPT_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 IPKG-OPT_DESCRIPTION=The Itsy Package Manager
@@ -30,6 +31,10 @@ IPKG-OPT_CONFLICTS=
 IPKG-OPT_CVS_TAG=v0-99-163
 IPKG-OPT_VERSION=0.99.163
 IPKG-OPT_CVS_OPTS=-r $(IPKG-OPT_CVS_TAG)
+
+IPKG-OPT_SITE=http://ftp.osuosl.org/pub/nslu2/sources
+IPKG-OPT_SOURCE=ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+IPKG-OPT_UNZIP=zcat
 
 #
 # IPKG-OPT_IPK_VERSION should be incremented when the ipk changes.
@@ -91,6 +96,7 @@ endif
 # directly to the builddir with CVS
 #
 $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz:
+ifdef IPKG-OPT_CVS_REV
 	( cd $(BUILD_DIR) ; \
 		rm -rf $(IPKG-OPT_DIR) && \
 		echo  "/1 $(IPKG-OPT_REPOSITORY):2401/cvs Ay=0=h<Z" \
@@ -101,6 +107,10 @@ $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz:
 		tar -czf $@ $(IPKG-OPT_DIR) && \
 		rm -rf $(IPKG-OPT_DIR) \
 	)
+else
+	$(WGET) -P $(@D) $(IPKG-OPT_SITE)/$(@F) || \
+	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+endif
 
 ipkg-opt-source: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 

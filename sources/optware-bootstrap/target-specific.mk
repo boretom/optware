@@ -1,4 +1,6 @@
 OPTWARE-BOOTSTRAP_TARGETS=\
+	asustor-i686 \
+	asustor-x86_64 \
 	dt2 \
 	fsg3v4 \
 	hpmv2 \
@@ -16,7 +18,9 @@ OPTWARE-BOOTSTRAP_TARGETS=\
 	tsx09 \
 	vt4 \
 
+
 OPTWARE-BOOTSTRAP_REAL_OPT_DIR=$(strip \
+	$(if $(filter asustor-i686 asustor-x86_64, $(OPTWARE_TARGET)), /usr/local/AppCentral/optware/opt, \
 	$(if $(filter ds101 ds101g, $(OPTWARE_TARGET)), /volume1/opt, \
 	$(if $(filter syno-e500 syno-i686 syno-mvkw syno-x07, $(OPTWARE_TARGET)), /volume1/@optware, \
 	$(if $(filter fsg3 fsg3v4 dt2 vt4, $(OPTWARE_TARGET)), /home/.optware, \
@@ -26,13 +30,15 @@ OPTWARE-BOOTSTRAP_REAL_OPT_DIR=$(strip \
 	$(if $(filter lspro ls-mvkw, $(OPTWARE-BOOTSTRAP_TARGET)), /mnt/disk1/.optware, \
 	$(if $(filter teraprov2, $(OPTWARE-BOOTSTRAP_TARGET)), /mnt/array1/.optware, \
 	$(if $(filter tsx09, $(OPTWARE-BOOTSTRAP_TARGET)), /share/MD0_DATA/.@optware, \
-	))))))))))
+	)))))))))))
+
 
 OPTWARE-BOOTSTRAP_RC=$(strip \
+	$(if $(filter asustor-i686 asustor-x86_64, $(OPTWARE_TARGET)), /etc/init.d/S99Optware , \
 	$(if $(filter cs05q3armel mssii, $(OPTWARE_TARGET)), /etc/init.d/rc.optware, \
 	$(if $(filter syno-e500 syno-i686 syno-mvkw syno-x07, $(OPTWARE_TARGET)), /etc/rc.optware, \
 	$(if $(filter syno-mvkw, $(OPTWARE-BOOTSTRAP_TARGET)), /etc/rc.optware, \
-	/etc/init.d/optware))))
+	/etc/init.d/optware)))))
 
 OPTWARE-BOOTSTRAP_CONTAINS=$(strip \
 	ipkg-opt wget \
