@@ -10,8 +10,8 @@
 # questions. But feel free to update or change this package
 # if there are reasons.
 #
-ATOP_SITE=http://www.atconsultancy.nl/atop/packages
-ATOP_VERSION=1.21
+ATOP_SITE=http://www.atoptool.nl/download
+ATOP_VERSION=1.27-3
 ATOP_SOURCE=atop-$(ATOP_VERSION).tar.gz
 ATOP_DIR=atop-$(ATOP_VERSION)
 ATOP_UNZIP=zcat
@@ -36,7 +36,7 @@ ATOP_IPK_VERSION=1
 # ATOP_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-ATOP_PATCHES=$(ATOP_SOURCE_DIR)/Makefile.patch
+ATOP_PATCHES=$(ATOP_SOURCE_DIR)/Makefile.v1.27-3.patch
 
 #
 # If the compilation of the package requires additional
@@ -116,8 +116,8 @@ $(ATOP_BUILD_DIR)/.configured: $(DL_DIR)/$(ATOP_SOURCE) $(ATOP_PATCHES) make/ato
 	echo "RANLIB=$(TARGET_RANLIB)" >> $(ATOP_MAKEFILE_OPTWARE)
 	echo "STRIP=$(TARGET_STRIP)" >> $(ATOP_MAKEFILE_OPTWARE)
 	echo "" >> $(ATOP_MAKEFILE_OPTWARE)
-	echo "OPTWARE_CFLAGS=$(STAGING_CPPFLAGS) -I$(STAGING_INCLUDE_DIR)/ncurses" >> $(ATOP_MAKEFILE_OPTWARE)
-	echo "OPTWARE_LDFLAGS=$(STAGING_LDFLAGS)" >> $(ATOP_MAKEFILE_OPTWARE)
+	echo "OPTWARE_CFLAGS=$(STAGING_CPPFLAGS) -I$(STAGING_INCLUDE_DIR)" >> $(ATOP_MAKEFILE_OPTWARE)
+	echo "OPTWARE_LDFLAGS=$(STAGING_LDFLAGS) -L$(STAGING_LIB_DIR)" >> $(ATOP_MAKEFILE_OPTWARE)
 	echo "" >> $(ATOP_MAKEFILE_OPTWARE)
 	echo "DESTDIR=$(ATOP_IPK_DIR)" >> $(ATOP_MAKEFILE_OPTWARE)
         

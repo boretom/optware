@@ -1,0 +1,86 @@
+--- Makefile.orig	2012-07-22 11:38:56.000000000 +0200
++++ Makefile	2013-11-29 13:48:58.043255239 +0100
+@@ -4,19 +4,20 @@
+ #
+ DESTDIR  =
+ 
+-BINPATH  = /usr/bin
+-SCRPATH  = /etc/atop
+-LOGPATH  = /var/log/atop
+-MAN1PATH = /usr/share/man/man1
+-MAN5PATH = /usr/share/man/man5
+-INIPATH  = /etc/rc.d/init.d
+-CRNPATH  = /etc/cron.d
+-ROTPATH  = /etc/logrotate.d
+-PMPATH1  = /usr/lib/pm-utils/sleep.d
+-PMPATH2  = /usr/lib64/pm-utils/sleep.d
+-
+-CFLAGS  += -O2 -I. -Wall	 # -DHTTPSTATS
+-LDFLAGS += -lncurses -lm -lz
++BINPATH  = /opt/bin
++SCRPATH  = /opt/etc/atop
++LOGPATH  = /opt/var/log/atop
++MAN1PATH = /opt/man/man1
++MAN5PATH = /opt/man/man5
++INIPATH  = /opt/etc/init.d
++CRNPATH  = /opt/etc/cron.d
++ROTPATH  = /opt/etc/logrotate.d
++PMPATH1  = /opt/lib/pm-utils/sleep.d
++PMPATH2  = /opt/lib64/pm-utils/sleep.d
++
++include Makefile.optware
++CFLAGS  = -O2 -I. $(OPTWARE_CFLAGS) -Wall # -DHTTPSTATS
++LDFLAGS = $(OPTWARE_LDFLAGS) -lncurses -lm -lz
+ OBJMOD0  = version.o
+ OBJMOD1  = various.o  deviate.o   procdbase.o
+ OBJMOD2  = acctproc.o photoproc.o photosyst.o  rawlog.o ifprop.o parseable.o
+@@ -29,24 +30,18 @@
+ all: 		atop
+ 
+ atop:		atop.o    $(ALLMODS) Makefile
+-		$(CC) atop.o $(ALLMODS) -o atop $(LDFLAGS)
++		$(LD) atop.o $(ALLMODS) -o atop $(LDFLAGS)
+ 
+ clean:
+ 		rm -f *.o
+ 
+ install:	atop
+-		if [ ! -d $(DESTDIR)$(LOGPATH) ]; 	\
+-			then mkdir -p $(DESTDIR)$(LOGPATH); fi
+ 		if [ ! -d $(DESTDIR)$(BINPATH) ]; 	\
+ 			then mkdir -p $(DESTDIR)$(BINPATH); fi
+-		if [ ! -d $(DESTDIR)$(SCRPATH) ]; 	\
+-			then mkdir -p $(DESTDIR)$(SCRPATH); fi
+ 		if [ ! -d $(DESTDIR)$(MAN1PATH) ]; 	\
+ 			then mkdir -p $(DESTDIR)$(MAN1PATH); fi
+ 		if [ ! -d $(DESTDIR)$(MAN5PATH) ]; 	\
+ 			then mkdir -p $(DESTDIR)$(MAN5PATH); fi
+-		if [ ! -d $(DESTDIR)$(INIPATH) ]; 	\
+-			then mkdir -p $(DESTDIR)$(INIPATH); fi
+ 		if [ ! -d $(DESTDIR)$(CRNPATH) ]; 	\
+ 			then mkdir -p $(DESTDIR)$(CRNPATH); fi
+ 		if [ ! -d $(DESTDIR)$(ROTPATH) ]; 	\
+@@ -59,23 +54,15 @@
+ 			chmod 0711 $(DESTDIR)$(PMPATH2)/45atoppm; fi
+ 		#
+ 		cp atop   		$(DESTDIR)$(BINPATH)/atop
+-		chown root		$(DESTDIR)$(BINPATH)/atop
+-		chmod 04711 		$(DESTDIR)$(BINPATH)/atop
+ 		ln -sf atop             $(DESTDIR)$(BINPATH)/atopsar
+ 		cp atop   		$(DESTDIR)$(BINPATH)/atop-$(VERS)
+ 		ln -sf atop-$(VERS)     $(DESTDIR)$(BINPATH)/atopsar-$(VERS)
+-		cp atop.daily    	$(DESTDIR)$(SCRPATH)
+-		chmod 0711 	 	$(DESTDIR)$(SCRPATH)/atop.daily
+ 		cp man/atop.1    	$(DESTDIR)$(MAN1PATH)
+ 		cp man/atopsar.1 	$(DESTDIR)$(MAN1PATH)
+ 		cp man/atoprc.5  	$(DESTDIR)$(MAN5PATH)
+-		cp atop.init     	$(DESTDIR)$(INIPATH)/atop
+ 		cp atop.cron     	$(DESTDIR)$(CRNPATH)/atop
+ 		cp psaccs_atop   	$(DESTDIR)$(ROTPATH)/psaccs_atop
+ 		cp psaccu_atop  	$(DESTDIR)$(ROTPATH)/psaccu_atop
+-		touch          	  	$(DESTDIR)$(LOGPATH)/dummy_before
+-		touch            	$(DESTDIR)$(LOGPATH)/dummy_after
+-		if [ -z "$(DESTDIR)" ]; then /sbin/chkconfig --add atop; fi
+ 
+ distr: rm -f *.o atop
+ 		tar czvf /tmp/atop.tar.gz *
