@@ -52,7 +52,7 @@ AGET_IPK_VERSION=1
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-AGET_CPPFLAGS=
+AGET_CPPFLAGS=-D_GNU_SOURCE
 AGET_LDFLAGS=-pthread
 
 #
