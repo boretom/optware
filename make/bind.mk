@@ -4,8 +4,8 @@
 #
 #############################################################
 
-BIND_UPSTREAM_VERSION=9.6.1-P3
-BIND_VERSION=9.6.1.3
+BIND_UPSTREAM_VERSION=9.6-ESV-R9-P1
+BIND_VERSION=9.6.ESV.R9.1
 BIND_SITE=ftp://ftp.isc.org/isc/bind9/$(BIND_UPSTREAM_VERSION)
 BIND_SOURCE=bind-$(BIND_UPSTREAM_VERSION).tar.gz
 BIND_DIR=bind-$(BIND_UPSTREAM_VERSION)
@@ -16,7 +16,7 @@ BIND_SECTION=net
 BIND_PRIORITY=optional
 BIND_DEPENDS=openssl, psmisc
 
-BIND_IPK_VERSION=4
+BIND_IPK_VERSION=5
 
 # BIND_PATCHES=$(BIND_SOURCE_DIR)/bind_configure_patch
 
@@ -67,6 +67,9 @@ $(BIND_BUILD_DIR)/.configured: $(DL_DIR)/$(BIND_SOURCE) make/bind.mk
 		--sysconfdir=/opt/etc/named \
 		--localstatedir=/opt/var \
 		--with-randomdev=/dev/random \
+		--with-ecdsa=no \
+		--with-gost=no \
+		--with-gssapi=no \
 		--disable-getifaddrs ; }
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
