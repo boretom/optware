@@ -5,7 +5,7 @@
 ###########################################################
 
 CPIO_SITE=http://ftp.gnu.org/gnu/cpio
-CPIO_VERSION=2.9
+CPIO_VERSION=2.11
 CPIO_SOURCE=cpio-$(CPIO_VERSION).tar.bz2
 CPIO_DIR=cpio-$(CPIO_VERSION)
 CPIO_UNZIP=bzcat
