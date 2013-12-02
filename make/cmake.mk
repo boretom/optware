@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 CMAKE_SITE=http://www.cmake.org/files/v2.8
-CMAKE_VERSION=2.8.1
+CMAKE_VERSION=2.8.12
 CMAKE_SOURCE=cmake-$(CMAKE_VERSION).tar.gz
 CMAKE_DIR=cmake-$(CMAKE_VERSION)
 CMAKE_UNZIP=zcat
