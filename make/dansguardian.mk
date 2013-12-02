@@ -1,4 +1,5 @@
 ###########################################################
+#include <sys/stat.h>
 #
 # dansguardian
 #
@@ -20,8 +21,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DANSGUARDIAN_SITE=http://dansguardian.org/downloads/2/Beta
-DANSGUARDIAN_VERSION=2.9.8.5
+DANSGUARDIAN_SITE=http://dansguardian.org/downloads/2/Stable
+DANSGUARDIAN_VERSION=2.10.1.1
 DANSGUARDIAN_SOURCE=dansguardian-$(DANSGUARDIAN_VERSION).tar.gz
 DANSGUARDIAN_DIR=dansguardian-$(DANSGUARDIAN_VERSION)
 DANSGUARDIAN_UNZIP=zcat
@@ -50,6 +51,7 @@ DANSGUARDIAN_IPK_VERSION=2
 # which they should be applied to the source code.
 #
 #DANSGUARDIAN_PATCHES=$(DANSGUARDIAN_SOURCE_DIR)/configure.patch
+DANSGUARDIAN_PATCHES=$(DANSGUARDIAN_SOURCE_DIR)/fancy.cpp.patch
 
 #
 # If the compilation of the package requires additional

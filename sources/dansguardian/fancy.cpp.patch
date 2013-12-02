@@ -1,0 +1,10 @@
+--- src/downloadmanagers/fancy.cpp.orig	2013-11-26 23:44:04.720885000 +0100
++++ src/downloadmanagers/fancy.cpp	2013-11-26 23:44:20.952885000 +0100
+@@ -29,6 +29,7 @@
+ #include <syslog.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
++#include <stdio.h>
+ #include <unistd.h>
+ #include <iostream>
+ #include <math.h>
