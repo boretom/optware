@@ -189,7 +189,7 @@ $(CMAKE_IPK_DIR)/CONTROL/control:
 #
 $(CMAKE_IPK): $(CMAKE_BUILD_DIR)/.built
 	rm -rf $(CMAKE_IPK_DIR) $(BUILD_DIR)/cmake_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(CMAKE_BUILD_DIR) DESTDIR=$(CMAKE_IPK_DIR) install
+	$(MAKE) -C $(CMAKE_BUILD_DIR) DESTDIR=$(CMAKE_IPK_DIR) install/strip
 #	install -d $(CMAKE_IPK_DIR)/opt/etc/
 #	install -m 644 $(CMAKE_SOURCE_DIR)/cmake.conf $(CMAKE_IPK_DIR)/opt/etc/cmake.conf
 #	install -d $(CMAKE_IPK_DIR)/opt/etc/init.d
