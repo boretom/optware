@@ -24,6 +24,12 @@ BZIP2_SOURCE_DIR=$(SOURCE_DIR)/bzip2
 BZIP2_IPK=$(BUILD_DIR)/bzip2_$(BZIP2_VERSION)-$(BZIP2_IPK_VERSION)_$(TARGET_ARCH).ipk
 BZIP2_IPK_DIR=$(BUILD_DIR)/bzip2-$(BZIP2_VERSION)-ipk
 
+BZIP2_CPPFLAGS=
+BZIP2_LDFLAGS=
+ifeq ($(TARGET_ARCH), x86_64))
+BZIP2_CPPFLAGS+= -fPIC
+endif
+
 .PHONY: bzip2-source bzip2-unpack bzip2 bzip2-stage bzip2-ipk bzip2-clean bzip2-dirclean bzip2-check
 
 $(DL_DIR)/$(BZIP2_SOURCE):
