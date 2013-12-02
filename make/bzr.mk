@@ -21,8 +21,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-BZR_VERSION=2.3.3
-BZR_SITE=https://launchpad.net/bzr/2.3/$(BZR_VERSION)/+download
+BZR_VERSION=2.6.0
+BZR_SITE=https://launchpad.net/bzr/2.6/$(BZR_VERSION)/+download
 BZR_SOURCE=bzr-$(BZR_VERSION).tar.gz
 BZR_DIR=bzr-$(BZR_VERSION)
 BZR_UNZIP=zcat
@@ -30,14 +30,14 @@ BZR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 BZR_DESCRIPTION=A decentralized revision control system designed to be easy for developers and end users alike.
 BZR_SECTION=misc
 BZR_PRIORITY=optional
-PY25-BZR_DEPENDS=python25
 PY26-BZR_DEPENDS=python26
+PY27-BZR_DEPENDS=python27
 BZR_CONFLICTS=
 
 #
 # BZR_IPK_VERSION should be incremented when the ipk changes.
 #
-BZR_IPK_VERSION=1
+BZR_IPK_VERSION=2
 
 #
 # BZR_CONFFILES should be a list of user-editable files
@@ -68,11 +68,11 @@ BZR_LDFLAGS=
 BZR_BUILD_DIR=$(BUILD_DIR)/bzr
 BZR_SOURCE_DIR=$(SOURCE_DIR)/bzr
 
-PY25-BZR_IPK_DIR=$(BUILD_DIR)/py25-bzr-$(BZR_VERSION)-ipk
-PY25-BZR_IPK=$(BUILD_DIR)/py25-bzr_$(BZR_VERSION)-$(BZR_IPK_VERSION)_$(TARGET_ARCH).ipk
-
 PY26-BZR_IPK_DIR=$(BUILD_DIR)/py26-bzr-$(BZR_VERSION)-ipk
 PY26-BZR_IPK=$(BUILD_DIR)/py26-bzr_$(BZR_VERSION)-$(BZR_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+PY27-BZR_IPK_DIR=$(BUILD_DIR)/py27-bzr-$(BZR_VERSION)-ipk
+PY27-BZR_IPK=$(BUILD_DIR)/py27-bzr_$(BZR_VERSION)-$(BZR_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: bzr-source bzr-unpack bzr bzr-stage bzr-ipk bzr-clean bzr-dirclean bzr-check
 
@@ -107,27 +107,10 @@ bzr-source: $(DL_DIR)/$(BZR_SOURCE) $(BZR_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(BZR_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR_SOURCE) $(BZR_PATCHES) make/bzr.mk
-	$(MAKE) python-stage
+	$(MAKE) python26-stage python27-stage
 	rm -rf $(BUILD_DIR)/py-bazaar-ng
 	rm -rf $(@D)
 	mkdir -p $(@D)
-	# 2.5
-	rm -rf $(BUILD_DIR)/$(BZR_DIR)
-	$(BZR_UNZIP) $(DL_DIR)/$(BZR_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	cat $(BZR_PATCHES) | patch -d $(BUILD_DIR)/$(BZR_DIR) -p1
-	mv $(BUILD_DIR)/$(BZR_DIR) $(@D)/2.5
-	(cd $(@D)/2.5; \
-	    ( \
-		echo "[build_ext]"; \
-	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.5"; \
-	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
-	        echo "rpath=/opt/lib"; \
-		echo "[build_scripts]"; \
-		echo "executable=/opt/bin/python2.5"; \
-		echo "[install]"; \
-		echo "install_scripts=/opt/bin"; \
-	    ) >> setup.cfg; \
-	)
 	# 2.6
 	rm -rf $(BUILD_DIR)/$(BZR_DIR)
 	$(BZR_UNZIP) $(DL_DIR)/$(BZR_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -145,6 +128,23 @@ $(BZR_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR_SOURCE) $(BZR_PATCHES) make/bzr.mk
 		echo "install_scripts=/opt/bin"; \
 	    ) >> setup.cfg; \
 	)
+	# 2.7
+	rm -rf $(BUILD_DIR)/$(BZR_DIR)
+	$(BZR_UNZIP) $(DL_DIR)/$(BZR_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+#	cat $(BZR_PATCHES) | patch -d $(BUILD_DIR)/$(BZR_DIR) -p1
+	mv $(BUILD_DIR)/$(BZR_DIR) $(@D)/2.7
+	(cd $(@D)/2.7; \
+	    ( \
+		echo "[build_ext]"; \
+	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.7"; \
+	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
+	        echo "rpath=/opt/lib"; \
+		echo "[build_scripts]"; \
+		echo "executable=/opt/bin/python2.7"; \
+		echo "[install]"; \
+		echo "install_scripts=/opt/bin"; \
+	    ) >> setup.cfg; \
+	)
 	touch $@
 
 bzr-unpack: $(BZR_BUILD_DIR)/.configured
@@ -154,13 +154,13 @@ bzr-unpack: $(BZR_BUILD_DIR)/.configured
 #
 $(BZR_BUILD_DIR)/.built: $(BZR_BUILD_DIR)/.configured
 	rm -f $@
-	(cd $(@D)/2.5; \
-	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py build; \
-	)
 	(cd $(@D)/2.6; \
 	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
 	    $(HOST_STAGING_PREFIX)/bin/python2.6 setup.py build; \
+	)
+	(cd $(@D)/2.7; \
+	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py build; \
 	)
 	touch $@
 
@@ -183,20 +183,6 @@ bzr: $(BZR_BUILD_DIR)/.built
 # This rule creates a control file for ipkg.  It is no longer
 # necessary to create a seperate control file under sources/bzr
 #
-$(PY25-BZR_IPK_DIR)/CONTROL/control:
-	@install -d $(@D)
-	@rm -f $@
-	@echo "Package: py25-bzr" >>$@
-	@echo "Architecture: $(TARGET_ARCH)" >>$@
-	@echo "Priority: $(BZR_PRIORITY)" >>$@
-	@echo "Section: $(BZR_SECTION)" >>$@
-	@echo "Version: $(BZR_VERSION)-$(BZR_IPK_VERSION)" >>$@
-	@echo "Maintainer: $(BZR_MAINTAINER)" >>$@
-	@echo "Source: $(BZR_SITE)/$(BZR_SOURCE)" >>$@
-	@echo "Description: $(BZR_DESCRIPTION)" >>$@
-	@echo "Depends: $(PY25-BZR_DEPENDS)" >>$@
-	@echo "Conflicts: $(BZR_CONFLICTS)" >>$@
-
 $(PY26-BZR_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
@@ -211,6 +197,19 @@ $(PY26-BZR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(PY26-BZR_DEPENDS)" >>$@
 	@echo "Conflicts: $(BZR_CONFLICTS)" >>$@
 
+$(PY27-BZR_IPK_DIR)/CONTROL/control:
+	@install -d $(@D)
+	@rm -f $@
+	@echo "Package: py27-bzr" >>$@
+	@echo "Architecture: $(TARGET_ARCH)" >>$@
+	@echo "Priority: $(BZR_PRIORITY)" >>$@
+	@echo "Section: $(BZR_SECTION)" >>$@
+	@echo "Version: $(BZR_VERSION)-$(BZR_IPK_VERSION)" >>$@
+	@echo "Maintainer: $(BZR_MAINTAINER)" >>$@
+	@echo "Source: $(BZR_SITE)/$(BZR_SOURCE)" >>$@
+	@echo "Description: $(BZR_DESCRIPTION)" >>$@
+	@echo "Depends: $(PY27-BZR_DEPENDS)" >>$@
+	@echo "Conflicts: $(BZR_CONFLICTS)" >>$@
 #
 # This builds the IPK file.
 #
@@ -223,17 +222,6 @@ $(PY26-BZR_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(PY25-BZR_IPK): $(BZR_BUILD_DIR)/.built
-	rm -rf $(BUILD_DIR)/py*-bzr_*.ipk
-	rm -rf $(PY25-BZR_IPK_DIR) $(BUILD_DIR)/py25-bzr_*_$(TARGET_ARCH).ipk
-	(cd $(BZR_BUILD_DIR)/2.5; \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py install --root=$(PY25-BZR_IPK_DIR) --prefix=/opt; \
-	)
-	$(STRIP_COMMAND) $(PY25-BZR_IPK_DIR)/opt/lib/python2.5/site-packages/bzrlib/*.so
-	$(MAKE) $(PY25-BZR_IPK_DIR)/CONTROL/control
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY25-BZR_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(PY25-BZR_IPK_DIR)
-
 $(PY26-BZR_IPK): $(BZR_BUILD_DIR)/.built
 	rm -rf $(PY26-BZR_IPK_DIR) $(BUILD_DIR)/py26-bzr_*_$(TARGET_ARCH).ipk
 	(cd $(BZR_BUILD_DIR)/2.6; \
@@ -245,12 +233,24 @@ $(PY26-BZR_IPK): $(BZR_BUILD_DIR)/.built
 	rm -rf $(PY26-BZR_IPK_DIR)/opt/man
 	$(MAKE) $(PY26-BZR_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY26-BZR_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(PY26-BZR_IPK_DIR)
+	#$(WHAT_TO_DO_WITH_IPK_DIR) $(PY26-BZR_IPK_DIR)
 
+$(PY27-BZR_IPK): $(BZR_BUILD_DIR)/.built
+	rm -rf $(PY27-BZR_IPK_DIR) $(BUILD_DIR)/py27-bzr_*_$(TARGET_ARCH).ipk
+	(cd $(BZR_BUILD_DIR)/2.7; \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py install --root=$(PY27-BZR_IPK_DIR) --prefix=/opt; \
+	)
+	$(STRIP_COMMAND) $(PY27-BZR_IPK_DIR)/opt/lib/python2.7/site-packages/bzrlib/*.so
+	for f in $(PY27-BZR_IPK_DIR)/opt/*bin/*; \
+		do mv $$f `echo $$f | sed 's|$$|-2.7|'`; done
+	rm -rf $(PY27-BZR_IPK_DIR)/opt/man
+	$(MAKE) $(PY27-BZR_IPK_DIR)/CONTROL/control
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY27-BZR_IPK_DIR)
+	#$(WHAT_TO_DO_WITH_IPK_DIR) $(PY27-BZR_IPK_DIR)
 #
 # This is called from the top level makefile to create the IPK file.
 #
-bzr-ipk: $(PY25-BZR_IPK) $(PY26-BZR_IPK)
+bzr-ipk: $(PY26-BZR_IPK) $(PY27-BZR_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
@@ -264,11 +264,11 @@ bzr-clean:
 #
 bzr-dirclean:
 	rm -rf $(BUILD_DIR)/$(BZR_DIR) $(BZR_BUILD_DIR)
-	rm -rf $(PY25-BZR_IPK_DIR) $(PY25-BZR_IPK)
 	rm -rf $(PY26-BZR_IPK_DIR) $(PY26-BZR_IPK)
+	rm -rf $(PY27-BZR_IPK_DIR) $(PY27-BZR_IPK)
 
 #
 # Some sanity check for the package.
 #
-bzr-check: $(PY25-BZR_IPK) $(PY26-BZR_IPK)
+bzr-check: $(PY26-BZR_IPK) $(PY27-BZR_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
