@@ -1,5 +1,5 @@
---- dropbear/configure.in.orig	2008-03-27 06:17:14.000000000 -0700
-+++ dropbear/configure.in	2008-03-28 18:24:43.000000000 -0700
+--- dropbear/configure.ac.orig	2008-03-27 06:17:14.000000000 -0700
++++ dropbear/configure.ac	2008-03-28 18:24:43.000000000 -0700
 @@ -164,15 +164,20 @@
  			AC_MSG_NOTICE(Not using openpty)
  		else
