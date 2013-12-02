@@ -21,7 +21,7 @@
 #
 BUSYBOX_SITE=http://www.busybox.net/downloads
 # If you change this version, you must check the adduser package as well.
-BUSYBOX_VERSION=1.10.3
+BUSYBOX_VERSION=1.21.1
 BUSYBOX_SOURCE=busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_DIR=busybox-$(BUSYBOX_VERSION)
 BUSYBOX_UNZIP=bzcat
@@ -35,7 +35,7 @@ BUSYBOX_CONFLICTS=
 #
 # BUSYBOX_IPK_VERSION should be incremented when the ipk changes.
 #
-BUSYBOX_IPK_VERSION=1
+BUSYBOX_IPK_VERSION=2
 
 #
 # If the compilation of the package requires additional
@@ -92,7 +92,7 @@ busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCHES)
 # If the compilation of the package requires other packages to be staged
 ## first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
-$(BUSYBOX_BUILD_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCHES) $(BUSYBOX_SOURCE_DIR)/defconfig make/busybox.mk $(wildcard $(BUSYBOX_SOURCE_DIR)/defconfig.$(OPTWARE_TARGET))
+$(BUSYBOX_BUILD_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCHES) $(BUSYBOX_SOURCE_DIR)/defconfig.v$(BUSYBOX_VERSION) make/busybox.mk $(wildcard $(BUSYBOX_SOURCE_DIR)/defconfig.$(OPTWARE_TARGET))
 	rm -rf $(BUILD_DIR)/$(BUSYBOX_DIR) $(@D)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if ls $(BUSYBOX_SOURCE_DIR)/$(OPTWARE_TARGET)*.patch >/dev/null 2>&1; \
@@ -105,7 +105,7 @@ $(BUSYBOX_BUILD_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCHES)
 	if test -f $(BUSYBOX_SOURCE_DIR)/defconfig.$(OPTWARE_TARGET); then \
 		cp $(BUSYBOX_SOURCE_DIR)/defconfig.$(OPTWARE_TARGET) $(@D)/.config; \
 	else \
-		cp $(BUSYBOX_SOURCE_DIR)/defconfig $(@D)/.config; \
+		cp $(BUSYBOX_SOURCE_DIR)/defconfig.v$(BUSYBOX_VERSION) $(@D)/.config; \
 	fi
 ifeq ($(LIBC_STYLE),uclibc)
 # default on, turn off if uclibc
