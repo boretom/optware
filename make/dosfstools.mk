@@ -20,11 +20,11 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DOSFSTOOLS_SITE=http://www.daniel-baumann.ch/software/dosfstools
-DOSFSTOOLS_VERSION=3.0.9
-DOSFSTOOLS_SOURCE=dosfstools-$(DOSFSTOOLS_VERSION).tar.bz2
+DOSFSTOOLS_SITE=http://daniel-baumann.ch/files/software/dosfstools
+DOSFSTOOLS_VERSION=3.0.23
+DOSFSTOOLS_SOURCE=dosfstools-$(DOSFSTOOLS_VERSION).tar.xz
 DOSFSTOOLS_DIR=dosfstools-$(DOSFSTOOLS_VERSION)
-DOSFSTOOLS_UNZIP=bzcat
+DOSFSTOOLS_UNZIP=xzcat
 DOSFSTOOLS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 DOSFSTOOLS_DESCRIPTION=Utilities to create and check MS-DOS FAT filesystems.
 DOSFSTOOLS_SECTION=utils
@@ -46,7 +46,7 @@ DOSFSTOOLS_IPK_VERSION=1
 # DOSFSTOOLS_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-DOSFSTOOLS_PATCHES=$(DOSFSTOOLS_SOURCE_DIR)/BLKSSZGET.patch
+DOSFSTOOLS_PATCHES=
 
 #
 # If the compilation of the package requires additional
