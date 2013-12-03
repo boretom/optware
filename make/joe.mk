@@ -14,7 +14,7 @@
 # You should change all these variables to suit your package.
 #
 JOE_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/joe-editor
-JOE_VERSION=3.6
+JOE_VERSION=3.7
 JOE_SOURCE=joe-$(JOE_VERSION).tar.gz
 JOE_DIR=joe-$(JOE_VERSION)
 JOE_UNZIP=zcat
