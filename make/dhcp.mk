@@ -6,9 +6,9 @@
 
 DHCP_BUILD_DIR:=$(BUILD_DIR)/dhcp
 
-DHCP_VERSION=4.1-ESV-R2
+DHCP_VERSION=4.1-ESV-R8
 DHCP_DIR=dhcp-$(DHCP_VERSION)
-DHCP_SITE=ftp://ftp.isc.org/isc/dhcp/
+DHCP_SITE=ftp://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
 DHCP_SOURCE:=$(DHCP_DIR).tar.gz
 DHCP_UNZIP=zcat
 DHCP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
@@ -113,7 +113,7 @@ $(DHCP_IPK): $(DHCP_BUILD_DIR)/.built
 	$(STRIP_COMMAND) $(DHCP_BUILD_DIR)/`find  builds/dhcp -name work* | cut -d/ -f3`/server/dhcpd -o $(DHCP_IPK_DIR)/opt/sbin/dhcpd
 	install -m 755 $(SOURCE_DIR)/dhcp.rc $(DHCP_IPK_DIR)/opt/etc/init.d/S56dhcp
 	touch $(DHCP_IPK_DIR)/opt/etc/dhcpd.leases
-	cp $(DHCP_BUILD_DIR)/server/dhcpd.conf $(DHCP_IPK_DIR)/opt/etc/
+	cp $(DHCP_BUILD_DIR)/server/dhcpd.conf.example $(DHCP_IPK_DIR)/opt/etc/dhcpd.conf
 	echo $(DHCP_CONFFILES) | sed -e 's/ /\n/g' > $(DHCP_IPK_DIR)/CONTROL/conffiles
 	$(MAKE) $(DHCP_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DHCP_IPK_DIR)
