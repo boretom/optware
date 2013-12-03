@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 DOXYGEN_SITE=ftp://ftp.stack.nl/pub/users/dimitri/
-DOXYGEN_VERSION=1.4.6
+DOXYGEN_VERSION=1.8.5
 DOXYGEN_SOURCE=doxygen-$(DOXYGEN_VERSION).src.tar.gz
 DOXYGEN_DIR=doxygen-$(DOXYGEN_VERSION)
 DOXYGEN_UNZIP=zcat
@@ -52,7 +52,7 @@ DOXYGEN_IPK_VERSION=2
 # DOXYGEN_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-DOXYGEN_PATCHES=$(DOXYGEN_SOURCE_DIR)/Makefile.in.patch
+#DOXYGEN_PATCHES=$(DOXYGEN_SOURCE_DIR)/Makefile.in.patch
 
 #
 # If the compilation of the package requires additional
@@ -194,6 +194,7 @@ $(DOXYGEN_IPK): $(DOXYGEN_BUILD_DIR)/.built
 	$(MAKE) $(DOXYGEN_IPK_DIR)/CONTROL/control
 #	install -m 755 $(DOXYGEN_SOURCE_DIR)/postinst $(DOXYGEN_IPK_DIR)/CONTROL/postinst
 #	install -m 755 $(DOXYGEN_SOURCE_DIR)/prerm $(DOXYGEN_IPK_DIR)/CONTROL/prerm
+	$(STRIP_COMMAND) $(DOXYGEN_IPK_DIR)/opt/bin/*
 	echo $(DOXYGEN_CONFFILES) | sed -e 's/ /\n/g' > $(DOXYGEN_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DOXYGEN_IPK_DIR)
 
