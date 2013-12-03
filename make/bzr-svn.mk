@@ -21,7 +21,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-BZR-SVN_VERSION=1.0.4
+#BZR-SVN_VERSION=1.0.4
+BZR-SVN_VERSION=1.2.3
 BZR-SVN_SITE=http://samba.org/~jelmer/bzr
 BZR-SVN_SOURCE=bzr-svn-$(BZR-SVN_VERSION).tar.gz
 BZR-SVN_DIR=bzr-svn-$(BZR-SVN_VERSION)
@@ -30,8 +31,8 @@ BZR-SVN_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 BZR-SVN_DESCRIPTION=Support for Subversion branches in Bazaar.
 BZR-SVN_SECTION=devel
 BZR-SVN_PRIORITY=optional
-PY25-BZR-SVN_DEPENDS=py25-bzr, py25-subvertpy
 PY26-BZR-SVN_DEPENDS=py26-bzr, py26-subvertpy
+PY27-BZR-SVN_DEPENDS=py27-bzr, py27-subvertpy
 BZR-SVN_CONFLICTS=
 
 #
@@ -68,11 +69,11 @@ BZR-SVN_LDFLAGS=
 BZR-SVN_BUILD_DIR=$(BUILD_DIR)/bzr-svn
 BZR-SVN_SOURCE_DIR=$(SOURCE_DIR)/bzr-svn
 
-PY25-BZR-SVN_IPK_DIR=$(BUILD_DIR)/py25-bzr-svn-$(BZR-SVN_VERSION)-ipk
-PY25-BZR-SVN_IPK=$(BUILD_DIR)/py25-bzr-svn_$(BZR-SVN_VERSION)-$(BZR-SVN_IPK_VERSION)_$(TARGET_ARCH).ipk
-
 PY26-BZR-SVN_IPK_DIR=$(BUILD_DIR)/py26-bzr-svn-$(BZR-SVN_VERSION)-ipk
 PY26-BZR-SVN_IPK=$(BUILD_DIR)/py26-bzr-svn_$(BZR-SVN_VERSION)-$(BZR-SVN_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+PY27-BZR-SVN_IPK_DIR=$(BUILD_DIR)/py27-bzr-svn-$(BZR-SVN_VERSION)-ipk
+PY27-BZR-SVN_IPK=$(BUILD_DIR)/py27-bzr-svn_$(BZR-SVN_VERSION)-$(BZR-SVN_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: bzr-svn-source bzr-svn-unpack bzr-svn bzr-svn-stage bzr-svn-ipk bzr-svn-clean bzr-svn-dirclean bzr-svn-check
 
@@ -110,23 +111,6 @@ $(BZR-SVN_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR-SVN_SOURCE) $(BZR-SVN_PATCHES)
 	$(MAKE) python-stage
 	rm -rf $(@D)
 	mkdir -p $(@D)
-	# 2.5
-	rm -rf $(BUILD_DIR)/$(BZR-SVN_DIR)
-	$(BZR-SVN_UNZIP) $(DL_DIR)/$(BZR-SVN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	cat $(BZR-SVN_PATCHES) | patch -d $(BUILD_DIR)/$(BZR-SVN_DIR) -p1
-	mv $(BUILD_DIR)/$(BZR-SVN_DIR) $(@D)/2.5
-	(cd $(@D)/2.5; \
-	    ( \
-		echo "[build_ext]"; \
-	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.5"; \
-	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
-	        echo "rpath=/opt/lib"; \
-		echo "[build_scripts]"; \
-		echo "executable=/opt/bin/python2.5"; \
-		echo "[install]"; \
-		echo "install_scripts=/opt/bin"; \
-	    ) >> setup.cfg; \
-	)
 	# 2.6
 	rm -rf $(BUILD_DIR)/$(BZR-SVN_DIR)
 	$(BZR-SVN_UNZIP) $(DL_DIR)/$(BZR-SVN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -144,6 +128,23 @@ $(BZR-SVN_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR-SVN_SOURCE) $(BZR-SVN_PATCHES)
 		echo "install_scripts=/opt/bin"; \
 	    ) >> setup.cfg; \
 	)
+	# 2.7
+	rm -rf $(BUILD_DIR)/$(BZR-SVN_DIR)
+	$(BZR-SVN_UNZIP) $(DL_DIR)/$(BZR-SVN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+#	cat $(BZR-SVN_PATCHES) | patch -d $(BUILD_DIR)/$(BZR-SVN_DIR) -p1
+	mv $(BUILD_DIR)/$(BZR-SVN_DIR) $(@D)/2.7
+	(cd $(@D)/2.7; \
+	    ( \
+		echo "[build_ext]"; \
+	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.7"; \
+	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
+	        echo "rpath=/opt/lib"; \
+		echo "[build_scripts]"; \
+		echo "executable=/opt/bin/python2.7"; \
+		echo "[install]"; \
+		echo "install_scripts=/opt/bin"; \
+	    ) >> setup.cfg; \
+	)
 	touch $@
 
 bzr-svn-unpack: $(BZR-SVN_BUILD_DIR)/.configured
@@ -153,13 +154,13 @@ bzr-svn-unpack: $(BZR-SVN_BUILD_DIR)/.configured
 #
 $(BZR-SVN_BUILD_DIR)/.built: $(BZR-SVN_BUILD_DIR)/.configured
 	rm -f $@
-	(cd $(@D)/2.5; \
-	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py build; \
-	)
 	(cd $(@D)/2.6; \
 	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
 	    $(HOST_STAGING_PREFIX)/bin/python2.6 setup.py build; \
+	)
+	(cd $(@D)/2.7; \
+	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py build; \
 	)
 	touch $@
 
@@ -182,20 +183,6 @@ bzr-svn: $(BZR-SVN_BUILD_DIR)/.built
 # This rule creates a control file for ipkg.  It is no longer
 # necessary to create a seperate control file under sources/bzr-svn
 #
-$(PY25-BZR-SVN_IPK_DIR)/CONTROL/control:
-	@install -d $(@D)
-	@rm -f $@
-	@echo "Package: py25-bzr-svn" >>$@
-	@echo "Architecture: $(TARGET_ARCH)" >>$@
-	@echo "Priority: $(BZR-SVN_PRIORITY)" >>$@
-	@echo "Section: $(BZR-SVN_SECTION)" >>$@
-	@echo "Version: $(BZR-SVN_VERSION)-$(BZR-SVN_IPK_VERSION)" >>$@
-	@echo "Maintainer: $(BZR-SVN_MAINTAINER)" >>$@
-	@echo "Source: $(BZR-SVN_SITE)/$(BZR-SVN_SOURCE)" >>$@
-	@echo "Description: $(BZR-SVN_DESCRIPTION)" >>$@
-	@echo "Depends: $(PY25-BZR-SVN_DEPENDS)" >>$@
-	@echo "Conflicts: $(BZR-SVN_CONFLICTS)" >>$@
-
 $(PY26-BZR-SVN_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
@@ -210,6 +197,20 @@ $(PY26-BZR-SVN_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(PY26-BZR-SVN_DEPENDS)" >>$@
 	@echo "Conflicts: $(BZR-SVN_CONFLICTS)" >>$@
 
+$(PY27-BZR-SVN_IPK_DIR)/CONTROL/control:
+	@install -d $(@D)
+	@rm -f $@
+	@echo "Package: py27-bzr-svn" >>$@
+	@echo "Architecture: $(TARGET_ARCH)" >>$@
+	@echo "Priority: $(BZR-SVN_PRIORITY)" >>$@
+	@echo "Section: $(BZR-SVN_SECTION)" >>$@
+	@echo "Version: $(BZR-SVN_VERSION)-$(BZR-SVN_IPK_VERSION)" >>$@
+	@echo "Maintainer: $(BZR-SVN_MAINTAINER)" >>$@
+	@echo "Source: $(BZR-SVN_SITE)/$(BZR-SVN_SOURCE)" >>$@
+	@echo "Description: $(BZR-SVN_DESCRIPTION)" >>$@
+	@echo "Depends: $(PY27-BZR-SVN_DEPENDS)" >>$@
+	@echo "Conflicts: $(BZR-SVN_CONFLICTS)" >>$@
+
 #
 # This builds the IPK file.
 #
@@ -222,14 +223,6 @@ $(PY26-BZR-SVN_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(PY25-BZR-SVN_IPK): $(BZR-SVN_BUILD_DIR)/.built
-	rm -rf $(PY25-BZR-SVN_IPK_DIR) $(BUILD_DIR)/py25-bzr-svn_*_$(TARGET_ARCH).ipk
-	(cd $(BZR-SVN_BUILD_DIR)/2.5; \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py install --root=$(PY25-BZR-SVN_IPK_DIR) --prefix=/opt; \
-	)
-#	$(STRIP_COMMAND) $(PY25-BZR-SVN_IPK_DIR)/opt/lib/python2.5/site-packages/bzrlib/*.so
-	$(MAKE) $(PY25-BZR-SVN_IPK_DIR)/CONTROL/control
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY25-BZR-SVN_IPK_DIR)
 
 $(PY26-BZR-SVN_IPK): $(BZR-SVN_BUILD_DIR)/.built
 	rm -rf $(PY26-BZR-SVN_IPK_DIR) $(BUILD_DIR)/py26-bzr-svn_*_$(TARGET_ARCH).ipk
@@ -240,10 +233,19 @@ $(PY26-BZR-SVN_IPK): $(BZR-SVN_BUILD_DIR)/.built
 	$(MAKE) $(PY26-BZR-SVN_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY26-BZR-SVN_IPK_DIR)
 
+$(PY27-BZR-SVN_IPK): $(BZR-SVN_BUILD_DIR)/.built
+	rm -rf $(PY27-BZR-SVN_IPK_DIR) $(BUILD_DIR)/py27-bzr-svn_*_$(TARGET_ARCH).ipk
+	(cd $(BZR-SVN_BUILD_DIR)/2.7; \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py install --root=$(PY27-BZR-SVN_IPK_DIR) --prefix=/opt; \
+	)
+#	$(STRIP_COMMAND) $(PY27-BZR-SVN_IPK_DIR)/opt/lib/python2.7/site-packages/bzrlib/*.so
+	$(MAKE) $(PY27-BZR-SVN_IPK_DIR)/CONTROL/control
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY27-BZR-SVN_IPK_DIR)
+
 #
 # This is called from the top level makefile to create the IPK file.
 #
-bzr-svn-ipk: $(PY25-BZR-SVN_IPK) $(PY26-BZR-SVN_IPK)
+bzr-svn-ipk: $(PY26-BZR-SVN_IPK) $(PY27-BZR-SVN_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
@@ -257,11 +259,11 @@ bzr-svn-clean:
 #
 bzr-svn-dirclean:
 	rm -rf $(BUILD_DIR)/$(BZR-SVN_DIR) $(BZR-SVN_BUILD_DIR)
-	rm -rf $(PY25-BZR-SVN_IPK_DIR) $(PY25-BZR-SVN_IPK)
 	rm -rf $(PY26-BZR-SVN_IPK_DIR) $(PY26-BZR-SVN_IPK)
+	rm -rf $(PY27-BZR-SVN_IPK_DIR) $(PY27-BZR-SVN_IPK)
 
 #
 # Some sanity check for the package.
 #
-bzr-svn-check: $(PY25-BZR-SVN_IPK) $(PY26-BZR-SVN_IPK)
+bzr-svn-check: $(PY26-BZR-SVN_IPK) $(PY27-BZR-SVN_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
