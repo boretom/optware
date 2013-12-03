@@ -22,7 +22,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 LIBGMP_SITE=ftp://ftp.gnu.org/gnu/gmp
-LIBGMP_VERSION=4.3.2
+LIBGMP_VERSION=5.1.3
 LIBGMP_SOURCE=gmp-$(LIBGMP_VERSION).tar.bz2
 LIBGMP_DIR=gmp-$(LIBGMP_VERSION)
 LIBGMP_UNZIP=bzcat
@@ -135,7 +135,6 @@ $(LIBGMP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGMP_SOURCE) $(LIBGMP_PATCHES) ma
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 		--disable-nls \
-		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
@@ -217,7 +216,7 @@ $(LIBGMP_IPK_DIR)/CONTROL/control:
 $(LIBGMP_IPK): $(LIBGMP_BUILD_DIR)/.built
 	rm -rf $(LIBGMP_IPK_DIR) $(BUILD_DIR)/libgmp_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBGMP_BUILD_DIR) DESTDIR=$(LIBGMP_IPK_DIR) install-strip
-	$(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.[0-9].[0-9].[0-9]
+	$(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.*.*.*
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/
 #	install -m 644 $(LIBGMP_SOURCE_DIR)/libgmp.conf $(LIBGMP_IPK_DIR)/opt/etc/libgmp.conf
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/init.d
