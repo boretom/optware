@@ -147,7 +147,7 @@ $(OPENSSL_BUILD_DIR)/.built: $(OPENSSL_BUILD_DIR)/.configured
 	$(MAKE) -C $(@D) \
 		$(TARGET_CONFIGURE_OPTS) \
 		AR="${TARGET_AR} r" \
-                $(if $(filter i686, $(TARGET_ARCH)),AS=$(TARGET_CC),) \
+                $(if $(filter i686 x86_64, $(TARGET_ARCH)),AS=$(TARGET_CC),) \
 		$(OPENSSL_ASFLAG) \
 		MANDIR=/opt/man \
 		EX_LIBS="$(STAGING_LDFLAGS) -ldl" \
