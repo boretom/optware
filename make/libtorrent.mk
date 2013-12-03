@@ -12,7 +12,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 LIBTORRENT_SITE=http://libtorrent.rakshasa.no/downloads/
-LIBTORRENT_VERSION=0.12.6
+LIBTORRENT_VERSION=0.13.3
 LIBTORRENT_SVN=svn://rakshasa.no/libtorrent/trunk/libtorrent
 #LIBTORRENT_SVN_REV=1037
 ifdef LIBTORRENT_SVN_REV
@@ -43,7 +43,7 @@ LIBTORRENT_IPK_VERSION=1
 # LIBTORRENT_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-LIBTORRENT_PATCHES=
+LIBTORRENT_PATCHES=$(LIBTORRENT_SOURCE_DIR)/configure.0.13.3.patch
 
 ifeq ($(TARGET_ARCH), armeb)
 ifeq ($(LIBC_STYLE), glibc)
@@ -168,8 +168,11 @@ endif
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBTORRENT_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBTORRENT_LDFLAGS)" \
 		PKG_CONFIG_PATH="$(STAGING_DIR)/opt/lib/pkgconfig/" \
+		PKG_CONFIG_LIBDIR="$(STAGING_LIB_DIR)/pkgconfig" \
 		$(LIBTORRENT_CONFIGURE) \
 		PATH="$(PATH):$(STAGING_DIR)/opt/bin" \
+		OPENSSL_CFLAGS="$(STAGING_DIR)/opt/include" \
+		OPENSSL_LIBS="$(STAGING_DIR)/opt/lib" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \

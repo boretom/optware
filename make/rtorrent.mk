@@ -14,7 +14,7 @@
 #
 RTORRENT_SITE=http://libtorrent.rakshasa.no/downloads
 
-RTORRENT_VERSION ?= 0.8.6
+RTORRENT_VERSION ?= 0.9.3
 RTORRENT_IPK_VERSION ?= 1
 
 RTORRENT_SVN=svn://rakshasa.no/libtorrent/trunk/rtorrent
@@ -166,6 +166,7 @@ endif
 		$(RTORRENT_CONFIGURE_OPTS) \
 		--disable-nls \
 		--disable-static \
+		--with-ncurses \
 	)
 	$(PATCH_LIBTOOL) -e 's/ECHO="echo"/echo="echo"/' $(@D)/libtool
 	touch $@
