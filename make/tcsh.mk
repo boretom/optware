@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 TCSH_SITE=ftp://ftp.astron.com/pub/tcsh
-TCSH_VERSION=6.17.00
+TCSH_VERSION=6.18.00
 TCSH_SOURCE=tcsh-$(TCSH_VERSION).tar.gz
 TCSH_DIR=tcsh-$(TCSH_VERSION)
 TCSH_UNZIP=zcat
@@ -30,7 +30,7 @@ TCSH_DESCRIPTION=C shell with file name completion and command line editing.
 TCSH_SECTION=shell
 TCSH_PRIORITY=optional
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-TCSH_DEPENDS=libiconv
+TCSH_DEPENDS=libiconv ncurses
 else
 TCSH_DEPENDS=
 endif
@@ -57,7 +57,7 @@ TCSH_IPK_VERSION=1
 # compilation or linking flags, then list them here.
 #
 TCSH_CPPFLAGS=
-TCSH_LDFLAGS=
+TCSH_LDFLAGS=-L/usr/lib/i386-linux-gnu
 
 #
 # TCSH_BUILD_DIR is the directory in which the build is done.
@@ -110,7 +110,7 @@ tcsh-source: $(DL_DIR)/$(TCSH_SOURCE) $(TCSH_PATCHES)
 #
 $(TCSH_BUILD_DIR)/.configured: $(DL_DIR)/$(TCSH_SOURCE) $(TCSH_PATCHES) make/tcsh.mk
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-	$(MAKE) libiconv-stage
+	$(MAKE) libiconv-stage ncurses-stage
 endif
 	rm -rf $(BUILD_DIR)/$(TCSH_DIR) $(@D)
 	$(TCSH_UNZIP) $(DL_DIR)/$(TCSH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -126,6 +126,8 @@ endif
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(TCSH_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(TCSH_LDFLAGS)" \
+		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		PKG_CONFIG_LIBDIR="$(STAGING_LIB_DIR)/pkgconfig" \
 		ac_cv_func_setpgrp_void=yes \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
