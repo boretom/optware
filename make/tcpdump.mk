@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 TCPDUMP_SITE=http://www.tcpdump.org/release
-TCPDUMP_VERSION=4.3.0
+TCPDUMP_VERSION=4.5.1
 TCPDUMP_SOURCE=tcpdump-$(TCPDUMP_VERSION).tar.gz
 TCPDUMP_DIR=tcpdump-$(TCPDUMP_VERSION)
 TCPDUMP_UNZIP=zcat
