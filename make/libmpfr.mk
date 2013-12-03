@@ -163,7 +163,7 @@ libmpfr: $(LIBMPFR_BUILD_DIR)/.built
 $(LIBMPFR_BUILD_DIR)/.staged: $(LIBMPFR_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
-	sed -i 's$^(dependency_libs=.*) (/opt/lib/.*)$/\1$g' $(STAGING_LIBDIR)/libmpfr.la
+	sed -i 's%^\(dependency_libs=.*\) \(/opt/lib/.*\.la\)\(.*\)%\1 \3%g' $(STAGING_DIR)/opt/lib/libmpfr.la
 	touch $@
 
 libmpfr-stage: $(LIBMPFR_BUILD_DIR)/.staged
