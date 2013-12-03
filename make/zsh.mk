@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 ZSH_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/zsh
-ZSH_VERSION=4.3.17
+ZSH_VERSION=5.0.2
 ZSH_SOURCE=zsh-$(ZSH_VERSION).tar.gz
 ZSH_DIR=zsh-$(ZSH_VERSION)
 ZSH_UNZIP=zcat
