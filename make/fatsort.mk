@@ -21,7 +21,8 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 FATSORT_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/fatsort
-FATSORT_VERSION=0.9.16.254
+# FATSORT_VERSION=0.9.16.254
+FATSORT_VERSION=1.1.1.336
 FATSORT_SOURCE=fatsort-$(FATSORT_VERSION).tar.gz
 FATSORT_DIR=fatsort-$(FATSORT_VERSION)
 FATSORT_UNZIP=zcat
