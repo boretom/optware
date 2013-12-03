@@ -21,8 +21,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-BZRTOOLS_VERSION=2.2.0
-BZRTOOLS_SITE=http://launchpad.net/bzrtools/stable/2.2.0/+download
+BZRTOOLS_VERSION=2.5
+BZRTOOLS_SITE=http://launchpad.net/bzrtools/stable/2.5/+download
 BZRTOOLS_SOURCE=bzrtools-$(BZRTOOLS_VERSION).tar.gz
 BZRTOOLS_DIR=bzrtools
 BZRTOOLS_UNZIP=zcat
@@ -30,8 +30,8 @@ BZRTOOLS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 BZRTOOLS_DESCRIPTION=A set of plugins for Bazaar.
 BZRTOOLS_SECTION=devel
 BZRTOOLS_PRIORITY=optional
-PY25-BZRTOOLS_DEPENDS=py25-bzr
 PY26-BZRTOOLS_DEPENDS=py26-bzr
+PY27-BZRTOOLS_DEPENDS=py27-bzr
 BZRTOOLS_CONFLICTS=
 
 #
@@ -68,11 +68,11 @@ BZRTOOLS_LDFLAGS=
 BZRTOOLS_BUILD_DIR=$(BUILD_DIR)/bzrtools
 BZRTOOLS_SOURCE_DIR=$(SOURCE_DIR)/bzrtools
 
-PY25-BZRTOOLS_IPK_DIR=$(BUILD_DIR)/py25-bzrtools-$(BZRTOOLS_VERSION)-ipk
-PY25-BZRTOOLS_IPK=$(BUILD_DIR)/py25-bzrtools_$(BZRTOOLS_VERSION)-$(BZRTOOLS_IPK_VERSION)_$(TARGET_ARCH).ipk
-
 PY26-BZRTOOLS_IPK_DIR=$(BUILD_DIR)/py26-bzrtools-$(BZRTOOLS_VERSION)-ipk
 PY26-BZRTOOLS_IPK=$(BUILD_DIR)/py26-bzrtools_$(BZRTOOLS_VERSION)-$(BZRTOOLS_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+PY27-BZRTOOLS_IPK_DIR=$(BUILD_DIR)/py27-bzrtools-$(BZRTOOLS_VERSION)-ipk
+PY27-BZRTOOLS_IPK=$(BUILD_DIR)/py27-bzrtools_$(BZRTOOLS_VERSION)-$(BZRTOOLS_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: bzrtools-source bzrtools-unpack bzrtools bzrtools-stage bzrtools-ipk bzrtools-clean bzrtools-dirclean bzrtools-check
 
@@ -110,22 +110,6 @@ $(BZRTOOLS_BUILD_DIR)/.configured: $(DL_DIR)/$(BZRTOOLS_SOURCE) $(BZRTOOLS_PATCH
 	$(MAKE) py-setuptools-stage
 	rm -rf $(@D)
 	mkdir -p $(@D)
-	# 2.5
-	$(BZRTOOLS_UNZIP) $(DL_DIR)/$(BZRTOOLS_SOURCE) | tar -C $(@D) -xvf -
-#	cat $(BZRTOOLS_PATCHES) | patch -d $(BUILD_DIR)/$(BZRTOOLS_DIR) -p1
-	mv $(@D)/$(BZRTOOLS_DIR) $(@D)/2.5
-	(cd $(@D)/2.5; \
-	    ( \
-		echo "[build_ext]"; \
-	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.5"; \
-	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
-	        echo "rpath=/opt/lib"; \
-		echo "[build_scripts]"; \
-		echo "executable=/opt/bin/python2.5"; \
-		echo "[install]"; \
-		echo "install_scripts=/opt/bin"; \
-	    ) >> setup.cfg; \
-	)
 	# 2.6
 	$(BZRTOOLS_UNZIP) $(DL_DIR)/$(BZRTOOLS_SOURCE) | tar -C $(@D) -xvf -
 #	cat $(BZRTOOLS_PATCHES) | patch -d $(BUILD_DIR)/$(BZRTOOLS_DIR) -p1
@@ -142,6 +126,22 @@ $(BZRTOOLS_BUILD_DIR)/.configured: $(DL_DIR)/$(BZRTOOLS_SOURCE) $(BZRTOOLS_PATCH
 		echo "install_scripts=/opt/bin"; \
 	    ) >> setup.cfg; \
 	)
+	# 2.7
+	$(BZRTOOLS_UNZIP) $(DL_DIR)/$(BZRTOOLS_SOURCE) | tar -C $(@D) -xvf -
+#	cat $(BZRTOOLS_PATCHES) | patch -d $(BUILD_DIR)/$(BZRTOOLS_DIR) -p1
+	mv $(@D)/$(BZRTOOLS_DIR) $(@D)/2.7
+	(cd $(@D)/2.7; \
+	    ( \
+		echo "[build_ext]"; \
+	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.7"; \
+	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
+	        echo "rpath=/opt/lib"; \
+		echo "[build_scripts]"; \
+		echo "executable=/opt/bin/python2.7"; \
+		echo "[install]"; \
+		echo "install_scripts=/opt/bin"; \
+	    ) >> setup.cfg; \
+	)
 	touch $@
 
 bzrtools-unpack: $(BZRTOOLS_BUILD_DIR)/.configured
@@ -151,13 +151,13 @@ bzrtools-unpack: $(BZRTOOLS_BUILD_DIR)/.configured
 #
 $(BZRTOOLS_BUILD_DIR)/.built: $(BZRTOOLS_BUILD_DIR)/.configured
 	rm -f $@
-	(cd $(@D)/2.5; \
-	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py build; \
-	)
 	(cd $(@D)/2.6; \
 	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
 	    $(HOST_STAGING_PREFIX)/bin/python2.6 setup.py build; \
+	)
+	(cd $(@D)/2.7; \
+	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py build; \
 	)
 	touch $@
 
@@ -180,20 +180,6 @@ bzrtools: $(BZRTOOLS_BUILD_DIR)/.built
 # This rule creates a control file for ipkg.  It is no longer
 # necessary to create a seperate control file under sources/bzrtools
 #
-$(PY25-BZRTOOLS_IPK_DIR)/CONTROL/control:
-	@install -d $(@D)
-	@rm -f $@
-	@echo "Package: py25-bzrtools" >>$@
-	@echo "Architecture: $(TARGET_ARCH)" >>$@
-	@echo "Priority: $(BZRTOOLS_PRIORITY)" >>$@
-	@echo "Section: $(BZRTOOLS_SECTION)" >>$@
-	@echo "Version: $(BZRTOOLS_VERSION)-$(BZRTOOLS_IPK_VERSION)" >>$@
-	@echo "Maintainer: $(BZRTOOLS_MAINTAINER)" >>$@
-	@echo "Source: $(BZRTOOLS_SITE)/$(BZRTOOLS_SOURCE)" >>$@
-	@echo "Description: $(BZRTOOLS_DESCRIPTION)" >>$@
-	@echo "Depends: $(PY25-BZRTOOLS_DEPENDS)" >>$@
-	@echo "Conflicts: $(BZRTOOLS_CONFLICTS)" >>$@
-
 $(PY26-BZRTOOLS_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
@@ -208,6 +194,20 @@ $(PY26-BZRTOOLS_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(PY26-BZRTOOLS_DEPENDS)" >>$@
 	@echo "Conflicts: $(BZRTOOLS_CONFLICTS)" >>$@
 
+$(PY27-BZRTOOLS_IPK_DIR)/CONTROL/control:
+	@install -d $(@D)
+	@rm -f $@
+	@echo "Package: py27-bzrtools" >>$@
+	@echo "Architecture: $(TARGET_ARCH)" >>$@
+	@echo "Priority: $(BZRTOOLS_PRIORITY)" >>$@
+	@echo "Section: $(BZRTOOLS_SECTION)" >>$@
+	@echo "Version: $(BZRTOOLS_VERSION)-$(BZRTOOLS_IPK_VERSION)" >>$@
+	@echo "Maintainer: $(BZRTOOLS_MAINTAINER)" >>$@
+	@echo "Source: $(BZRTOOLS_SITE)/$(BZRTOOLS_SOURCE)" >>$@
+	@echo "Description: $(BZRTOOLS_DESCRIPTION)" >>$@
+	@echo "Depends: $(PY27-BZRTOOLS_DEPENDS)" >>$@
+	@echo "Conflicts: $(BZRTOOLS_CONFLICTS)" >>$@
+
 #
 # This builds the IPK file.
 #
@@ -220,15 +220,6 @@ $(PY26-BZRTOOLS_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(PY25-BZRTOOLS_IPK): $(BZRTOOLS_BUILD_DIR)/.built
-	rm -rf $(PY25-BZRTOOLS_IPK_DIR) $(BUILD_DIR)/py25-bzrtools_*_$(TARGET_ARCH).ipk
-	(cd $(BZRTOOLS_BUILD_DIR)/2.5; \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py install --root=$(PY25-BZRTOOLS_IPK_DIR) --prefix=/opt; \
-	)
-#	$(STRIP_COMMAND) $(PY25-BZRTOOLS_IPK_DIR)/opt/lib/python2.5/site-packages/bzrlib/*.so
-	$(MAKE) $(PY25-BZRTOOLS_IPK_DIR)/CONTROL/control
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY25-BZRTOOLS_IPK_DIR)
-
 $(PY26-BZRTOOLS_IPK): $(BZRTOOLS_BUILD_DIR)/.built
 	rm -rf $(PY26-BZRTOOLS_IPK_DIR) $(BUILD_DIR)/py26-bzrtools_*_$(TARGET_ARCH).ipk
 	(cd $(BZRTOOLS_BUILD_DIR)/2.6; \
@@ -238,10 +229,19 @@ $(PY26-BZRTOOLS_IPK): $(BZRTOOLS_BUILD_DIR)/.built
 	$(MAKE) $(PY26-BZRTOOLS_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY26-BZRTOOLS_IPK_DIR)
 
+$(PY27-BZRTOOLS_IPK): $(BZRTOOLS_BUILD_DIR)/.built
+	rm -rf $(PY27-BZRTOOLS_IPK_DIR) $(BUILD_DIR)/py27-bzrtools_*_$(TARGET_ARCH).ipk
+	(cd $(BZRTOOLS_BUILD_DIR)/2.7; \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py install --root=$(PY27-BZRTOOLS_IPK_DIR) --prefix=/opt; \
+	)
+#	$(STRIP_COMMAND) $(PY27-BZRTOOLS_IPK_DIR)/opt/lib/python2.7/site-packages/bzrlib/*.so
+	$(MAKE) $(PY27-BZRTOOLS_IPK_DIR)/CONTROL/control
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY27-BZRTOOLS_IPK_DIR)
+
 #
 # This is called from the top level makefile to create the IPK file.
 #
-bzrtools-ipk: $(PY25-BZRTOOLS_IPK) $(PY26-BZRTOOLS_IPK)
+bzrtools-ipk: $(PY26-BZRTOOLS_IPK) $(PY27-BZRTOOLS_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
@@ -255,11 +255,11 @@ bzrtools-clean:
 #
 bzrtools-dirclean:
 	rm -rf $(BUILD_DIR)/$(BZRTOOLS_DIR) $(BZRTOOLS_BUILD_DIR)
-	rm -rf $(PY25-BZRTOOLS_IPK_DIR) $(PY25-BZRTOOLS_IPK)
 	rm -rf $(PY26-BZRTOOLS_IPK_DIR) $(PY26-BZRTOOLS_IPK)
+	rm -rf $(PY27-BZRTOOLS_IPK_DIR) $(PY27-BZRTOOLS_IPK)
 
 #
 # Some sanity check for the package.
 #
-bzrtools-check: $(PY25-BZRTOOLS_IPK) $(PY26-BZRTOOLS_IPK)
+bzrtools-check: $(PY26-BZRTOOLS_IPK) $(PY27-BZRTOOLS_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
