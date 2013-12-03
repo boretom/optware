@@ -1,0 +1,42 @@
+--- src/dotd.c	(revision 750)
++++ src/dotd.c	(working copy)
+@@ -172,7 +172,6 @@
+     char **new_args;  /* will throw this away */
+     int has_dash_o = 0;
+     char *env_var = 0;
+-    int ret;
+     int i;
+     char *a;
+ 
+@@ -253,7 +252,7 @@
+ 
+         char *extension;
+         char *tmp_dotd_fname;
+-        ret = dcc_scan_args(argv, &input_file, &output_file, &new_args);
++        dcc_scan_args(argv, &input_file, &output_file, &new_args);
+         /* if .o is set, just append .d.
+          * otherwise, take the basename of the input, and set the suffix to .d */
+         if (has_dash_o)
+
+--- src/stats.c	(revision 755)
++++ src/stats.c	(working copy)
+@@ -440,6 +440,7 @@
+                                free_space_mb);
+         dcc_set_nonblocking(acc_fd);
+         ret = read(acc_fd, challenge, 1024); /* empty the receive queue */
++        if (ret < 0) rs_log_info("read on acc_fd failed");
+         dcc_writex(acc_fd, reply, reply_len);
+     }
+
+--- src/lsdistcc.c	(revision 762)
++++ src/lsdistcc.c	(working copy)
+@@ -720,6 +720,10 @@
+      * and make the program take longer than it should.
+      */
+     nready = poll(pollfds, (unsigned)nfds, 50);
++    if (nready == -1) {
++	fprintf(stderr, "lsdistcc: poll failed: %s\n", strerror(errno));
++	exit(1);
++    }
+     gettimeofday(&now, 0);
+

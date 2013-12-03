@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 DISTCC_SITE=http://distcc.googlecode.com/files
-DISTCC_VERSION=3.1
+DISTCC_VERSION=3.2rc1
 DISTCC_SOURCE=distcc-$(DISTCC_VERSION).tar.bz2
 DISTCC_DIR=distcc-$(DISTCC_VERSION)
 DISTCC_UNZIP=bzcat
@@ -41,7 +41,8 @@ DISTCC_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 DISTCC_PATCHES=$(DISTCC_SOURCE_DIR)/src-snprintf.patch \
-$(DISTCC_SOURCE_DIR)/lzo-minilzo.c.patch
+$(DISTCC_SOURCE_DIR)/lzo-minilzo.c.patch \
+$(DISTCC_SOURCE_DIR)/unused-var.patch
 
 #
 # If the compilation of the package requires additional
@@ -104,9 +105,9 @@ $(DISTCC_BUILD_DIR)/.configured: $(DL_DIR)/$(DISTCC_SOURCE) $(DISTCC_PATCHES) ma
 	mv $(BUILD_DIR)/$(DISTCC_DIR) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(DISTCC_CPPFLAGS)" \
+		CPPFLAGS="$(STAGING_CPPFLAGS) -I$(STAGING_DIR)/opt/include/python2.7 $(DISTCC_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(DISTCC_LDFLAGS)" \
-		PYTHON=/opt/bin/python2.5 \
+		PYTHON=$(STAGING_DIR)/opt/bin/python2.7 \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -125,7 +126,7 @@ distcc-unpack: $(DISTCC_BUILD_DIR)/.configured
 $(DISTCC_BUILD_DIR)/.built: $(DISTCC_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) -C $(@D) \
-		INCLUDESERVER_PYTHON=$(HOST_STAGING_PREFIX)/bin/python2.5 \
+		INCLUDESERVER_PYTHON=$(HOST_STAGING_PREFIX)/bin/python2.7 \
 		$(TARGET_CONFIGURE_OPTS) \
 		LDSHARED='$(TARGET_CC) -shared'
 	touch $@
@@ -170,9 +171,9 @@ $(DISTCC_IPK): $(DISTCC_BUILD_DIR)/.built
 	rm -rf $(DISTCC_IPK_DIR) $(DISTCC_IPK)
 	$(MAKE) -C $(DISTCC_BUILD_DIR) install \
 		DESTDIR=$(DISTCC_IPK_DIR) \
-		INCLUDESERVER_PYTHON=$(HOST_STAGING_PREFIX)/bin/python2.5
+		INCLUDESERVER_PYTHON=$(HOST_STAGING_PREFIX)/bin/python2.7
 	$(STRIP_COMMAND) $(DISTCC_IPK_DIR)/opt/bin/*distcc*
-	$(STRIP_COMMAND) $(DISTCC_IPK_DIR)/opt/lib/python2.5/site-packages/include_server/*.so
+	$(STRIP_COMMAND) $(DISTCC_IPK_DIR)/opt/lib/python2.7/site-packages/include_server/*.so
 #	install -d $(DISTCC_IPK_DIR)/opt/etc/init.d
 #	install -m 755 $(DISTCC_SOURCE_DIR)/rc.distcc $(DISTCC_IPK_DIR)/opt/etc/init.d/SXXdistcc
 	$(MAKE) $(DISTCC_IPK_DIR)/CONTROL/control
