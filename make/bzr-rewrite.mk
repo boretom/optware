@@ -21,7 +21,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-BZR-REWRITE_VERSION=0.6.2
+BZR-REWRITE_VERSION=0.6.3
 BZR-REWRITE_SITE=http://samba.org/~jelmer/bzr
 BZR-REWRITE_SOURCE=bzr-rewrite-$(BZR-REWRITE_VERSION).tar.gz
 BZR-REWRITE_DIR=bzr-rewrite-$(BZR-REWRITE_VERSION)
@@ -30,14 +30,14 @@ BZR-REWRITE_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 BZR-REWRITE_DESCRIPTION=Revision rewrite plugin for bzr.
 BZR-REWRITE_SECTION=devel
 BZR-REWRITE_PRIORITY=optional
-PY25-BZR-REWRITE_DEPENDS=py25-bzr
 PY26-BZR-REWRITE_DEPENDS=py26-bzr
+PY27-BZR-REWRITE_DEPENDS=py27-bzr
 BZR-REWRITE_CONFLICTS=
 
 #
 # BZR-REWRITE_IPK_VERSION should be incremented when the ipk changes.
 #
-BZR-REWRITE_IPK_VERSION=1
+BZR-REWRITE_IPK_VERSION=2
 
 #
 # BZR-REWRITE_CONFFILES should be a list of user-editable files
@@ -68,11 +68,11 @@ BZR-REWRITE_LDFLAGS=
 BZR-REWRITE_BUILD_DIR=$(BUILD_DIR)/bzr-rewrite
 BZR-REWRITE_SOURCE_DIR=$(SOURCE_DIR)/bzr-rewrite
 
-PY25-BZR-REWRITE_IPK_DIR=$(BUILD_DIR)/py25-bzr-rewrite-$(BZR-REWRITE_VERSION)-ipk
-PY25-BZR-REWRITE_IPK=$(BUILD_DIR)/py25-bzr-rewrite_$(BZR-REWRITE_VERSION)-$(BZR-REWRITE_IPK_VERSION)_$(TARGET_ARCH).ipk
-
 PY26-BZR-REWRITE_IPK_DIR=$(BUILD_DIR)/py26-bzr-rewrite-$(BZR-REWRITE_VERSION)-ipk
 PY26-BZR-REWRITE_IPK=$(BUILD_DIR)/py26-bzr-rewrite_$(BZR-REWRITE_VERSION)-$(BZR-REWRITE_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+PY27-BZR-REWRITE_IPK_DIR=$(BUILD_DIR)/py27-bzr-rewrite-$(BZR-REWRITE_VERSION)-ipk
+PY27-BZR-REWRITE_IPK=$(BUILD_DIR)/py27-bzr-rewrite_$(BZR-REWRITE_VERSION)-$(BZR-REWRITE_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: bzr-rewrite-source bzr-rewrite-unpack bzr-rewrite bzr-rewrite-stage bzr-rewrite-ipk bzr-rewrite-clean bzr-rewrite-dirclean bzr-rewrite-check
 
@@ -110,22 +110,6 @@ $(BZR-REWRITE_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR-REWRITE_SOURCE) $(BZR-REWR
 	$(MAKE) py-setuptools-stage
 	rm -rf $(@D)
 	mkdir -p $(@D)
-	# 2.5
-	$(BZR-REWRITE_UNZIP) $(DL_DIR)/$(BZR-REWRITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	cat $(BZR-REWRITE_PATCHES) | patch -d $(BUILD_DIR)/$(BZR-REWRITE_DIR) -p1
-	mv $(BUILD_DIR)/$(BZR-REWRITE_DIR) $(@D)/2.5
-	(cd $(@D)/2.5; \
-	    ( \
-		echo "[build_ext]"; \
-	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.5"; \
-	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
-	        echo "rpath=/opt/lib"; \
-		echo "[build_scripts]"; \
-		echo "executable=/opt/bin/python2.5"; \
-		echo "[install]"; \
-		echo "install_scripts=/opt/bin"; \
-	    ) >> setup.cfg; \
-	)
 	# 2.6
 	$(BZR-REWRITE_UNZIP) $(DL_DIR)/$(BZR-REWRITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 #	cat $(BZR-REWRITE_PATCHES) | patch -d $(BUILD_DIR)/$(BZR-REWRITE_DIR) -p1
@@ -142,6 +126,22 @@ $(BZR-REWRITE_BUILD_DIR)/.configured: $(DL_DIR)/$(BZR-REWRITE_SOURCE) $(BZR-REWR
 		echo "install_scripts=/opt/bin"; \
 	    ) >> setup.cfg; \
 	)
+	# 2.7
+	$(BZR-REWRITE_UNZIP) $(DL_DIR)/$(BZR-REWRITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+#	cat $(BZR-REWRITE_PATCHES) | patch -d $(BUILD_DIR)/$(BZR-REWRITE_DIR) -p1
+	mv $(BUILD_DIR)/$(BZR-REWRITE_DIR) $(@D)/2.7
+	(cd $(@D)/2.7; \
+	    ( \
+		echo "[build_ext]"; \
+	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.7"; \
+	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
+	        echo "rpath=/opt/lib"; \
+		echo "[build_scripts]"; \
+		echo "executable=/opt/bin/python2.7"; \
+		echo "[install]"; \
+		echo "install_scripts=/opt/bin"; \
+	    ) >> setup.cfg; \
+	)
 	touch $@
 
 bzr-rewrite-unpack: $(BZR-REWRITE_BUILD_DIR)/.configured
@@ -151,13 +151,13 @@ bzr-rewrite-unpack: $(BZR-REWRITE_BUILD_DIR)/.configured
 #
 $(BZR-REWRITE_BUILD_DIR)/.built: $(BZR-REWRITE_BUILD_DIR)/.configured
 	rm -f $@
-	(cd $(@D)/2.5; \
-	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py build; \
-	)
 	(cd $(@D)/2.6; \
 	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
 	    $(HOST_STAGING_PREFIX)/bin/python2.6 setup.py build; \
+	)
+	(cd $(@D)/2.7; \
+	$(TARGET_CONFIGURE_OPTS) LDSHARED='$(TARGET_CC) -shared' \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py build; \
 	)
 	touch $@
 
@@ -180,20 +180,6 @@ bzr-rewrite: $(BZR-REWRITE_BUILD_DIR)/.built
 # This rule creates a control file for ipkg.  It is no longer
 # necessary to create a seperate control file under sources/bzr-rewrite
 #
-$(PY25-BZR-REWRITE_IPK_DIR)/CONTROL/control:
-	@install -d $(@D)
-	@rm -f $@
-	@echo "Package: py25-bzr-rewrite" >>$@
-	@echo "Architecture: $(TARGET_ARCH)" >>$@
-	@echo "Priority: $(BZR-REWRITE_PRIORITY)" >>$@
-	@echo "Section: $(BZR-REWRITE_SECTION)" >>$@
-	@echo "Version: $(BZR-REWRITE_VERSION)-$(BZR-REWRITE_IPK_VERSION)" >>$@
-	@echo "Maintainer: $(BZR-REWRITE_MAINTAINER)" >>$@
-	@echo "Source: $(BZR-REWRITE_SITE)/$(BZR-REWRITE_SOURCE)" >>$@
-	@echo "Description: $(BZR-REWRITE_DESCRIPTION)" >>$@
-	@echo "Depends: $(PY25-BZR-REWRITE_DEPENDS)" >>$@
-	@echo "Conflicts: $(BZR-REWRITE_CONFLICTS)" >>$@
-
 $(PY26-BZR-REWRITE_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
@@ -208,6 +194,20 @@ $(PY26-BZR-REWRITE_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(PY26-BZR-REWRITE_DEPENDS)" >>$@
 	@echo "Conflicts: $(BZR-REWRITE_CONFLICTS)" >>$@
 
+$(PY27-BZR-REWRITE_IPK_DIR)/CONTROL/control:
+	@install -d $(@D)
+	@rm -f $@
+	@echo "Package: py27-bzr-rewrite" >>$@
+	@echo "Architecture: $(TARGET_ARCH)" >>$@
+	@echo "Priority: $(BZR-REWRITE_PRIORITY)" >>$@
+	@echo "Section: $(BZR-REWRITE_SECTION)" >>$@
+	@echo "Version: $(BZR-REWRITE_VERSION)-$(BZR-REWRITE_IPK_VERSION)" >>$@
+	@echo "Maintainer: $(BZR-REWRITE_MAINTAINER)" >>$@
+	@echo "Source: $(BZR-REWRITE_SITE)/$(BZR-REWRITE_SOURCE)" >>$@
+	@echo "Description: $(BZR-REWRITE_DESCRIPTION)" >>$@
+	@echo "Depends: $(PY27-BZR-REWRITE_DEPENDS)" >>$@
+	@echo "Conflicts: $(BZR-REWRITE_CONFLICTS)" >>$@
+
 #
 # This builds the IPK file.
 #
@@ -220,16 +220,6 @@ $(PY26-BZR-REWRITE_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(PY25-BZR-REWRITE_IPK): $(BZR-REWRITE_BUILD_DIR)/.built
-	rm -rf $(BUILD_DIR)/py25-bzr-rebase_*_$(TARGET_ARCH).ipk
-	rm -rf $(PY25-BZR-REWRITE_IPK_DIR) $(BUILD_DIR)/py25-bzr-rewrite_*_$(TARGET_ARCH).ipk
-	(cd $(BZR-REWRITE_BUILD_DIR)/2.5; \
-	    $(HOST_STAGING_PREFIX)/bin/python2.5 setup.py install --root=$(PY25-BZR-REWRITE_IPK_DIR) --prefix=/opt; \
-	)
-#	$(STRIP_COMMAND) $(PY25-BZR-REWRITE_IPK_DIR)/opt/lib/python2.5/site-packages/bzrlib/*.so
-	$(MAKE) $(PY25-BZR-REWRITE_IPK_DIR)/CONTROL/control
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY25-BZR-REWRITE_IPK_DIR)
-
 $(PY26-BZR-REWRITE_IPK): $(BZR-REWRITE_BUILD_DIR)/.built
 	rm -rf $(BUILD_DIR)/py26-bzr-rebase_*_$(TARGET_ARCH).ipk
 	rm -rf $(PY26-BZR-REWRITE_IPK_DIR) $(BUILD_DIR)/py26-bzr-rewrite_*_$(TARGET_ARCH).ipk
@@ -240,10 +230,20 @@ $(PY26-BZR-REWRITE_IPK): $(BZR-REWRITE_BUILD_DIR)/.built
 	$(MAKE) $(PY26-BZR-REWRITE_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY26-BZR-REWRITE_IPK_DIR)
 
+$(PY27-BZR-REWRITE_IPK): $(BZR-REWRITE_BUILD_DIR)/.built
+	rm -rf $(BUILD_DIR)/py27-bzr-rebase_*_$(TARGET_ARCH).ipk
+	rm -rf $(PY27-BZR-REWRITE_IPK_DIR) $(BUILD_DIR)/py27-bzr-rewrite_*_$(TARGET_ARCH).ipk
+	(cd $(BZR-REWRITE_BUILD_DIR)/2.7; \
+	    $(HOST_STAGING_PREFIX)/bin/python2.7 setup.py install --root=$(PY27-BZR-REWRITE_IPK_DIR) --prefix=/opt; \
+	)
+#	$(STRIP_COMMAND) $(PY27-BZR-REWRITE_IPK_DIR)/opt/lib/python2.6/site-packages/bzrlib/*.so
+	$(MAKE) $(PY27-BZR-REWRITE_IPK_DIR)/CONTROL/control
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(PY27-BZR-REWRITE_IPK_DIR)
+
 #
 # This is called from the top level makefile to create the IPK file.
 #
-bzr-rewrite-ipk: $(PY25-BZR-REWRITE_IPK) $(PY26-BZR-REWRITE_IPK)
+bzr-rewrite-ipk: $(PY26-BZR-REWRITE_IPK) $(PY27-BZR-REWRITE_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
@@ -257,11 +257,11 @@ bzr-rewrite-clean:
 #
 bzr-rewrite-dirclean:
 	rm -rf $(BUILD_DIR)/$(BZR-REWRITE_DIR) $(BZR-REWRITE_BUILD_DIR)
-	rm -rf $(PY25-BZR-REWRITE_IPK_DIR) $(PY25-BZR-REWRITE_IPK)
 	rm -rf $(PY26-BZR-REWRITE_IPK_DIR) $(PY26-BZR-REWRITE_IPK)
+	rm -rf $(PY27-BZR-REWRITE_IPK_DIR) $(PY27-BZR-REWRITE_IPK)
 
 #
 # Some sanity check for the package.
 #
-bzr-rewrite-check: $(PY25-BZR-REWRITE_IPK) $(PY26-BZR-REWRITE_IPK)
+bzr-rewrite-check: $(PY26-BZR-REWRITE_IPK) $(PY27-BZR-REWRITE_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
