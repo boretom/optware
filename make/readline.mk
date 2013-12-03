@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 READLINE_SITE=http://ftp.gnu.org/pub/gnu/readline
-READLINE_VERSION=6.1
+READLINE_VERSION=6.2
 READLINE_SOURCE=readline-$(READLINE_VERSION).tar.gz
 READLINE_DIR=readline-$(READLINE_VERSION)
 READLINE_UNZIP=zcat
@@ -51,6 +51,7 @@ READLINE_IPK_VERSION=2
 # which they should be applied to the source code.
 #
 #READLINE_PATCHES=$(READLINE_SOURCE_DIR)/configure.patch
+READLINE_PATCHES=$(READLINE_SOURCE_DIR)/readline*
 
 #
 # If the compilation of the package requires additional
@@ -110,7 +111,7 @@ $(READLINE_BUILD_DIR)/.configured: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCH
 	$(MAKE) ncurses-stage
 	rm -rf $(BUILD_DIR)/$(READLINE_DIR) $(@D)
 	$(READLINE_UNZIP) $(DL_DIR)/$(READLINE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	cat $(READLINE_PATCHES) | patch -d $(BUILD_DIR)/$(READLINE_DIR) -p1
+	cat $(READLINE_PATCHES) | patch -d $(BUILD_DIR)/$(READLINE_DIR) -p0
 	if test "$(BUILD_DIR)/$(READLINE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(READLINE_DIR) $(@D) ; \
 	fi
