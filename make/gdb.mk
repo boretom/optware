@@ -21,7 +21,7 @@
 #
 GDB_SITE=http://ftp.gnu.org/gnu/gdb
 ifneq ($(OPTWARE_TARGET), $(filter wl500g mss, $(OPTWARE_TARGET)))
-GDB_VERSION=6.8
+GDB_VERSION=7.6
 GDB_IPK_VERSION=2
 else
 GDB_VERSION=6.3
