@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 IOZONE_SITE=http://www.iozone.org/src/current
-IOZONE_VERSION=3_283
+IOZONE_VERSION=3_420
 IOZONE_SOURCE=iozone$(IOZONE_VERSION).tar
 IOZONE_DIR=iozone$(IOZONE_VERSION)
 IOZONE_UNZIP=cat
@@ -57,7 +57,12 @@ IOZONE_CPPFLAGS=-DNO_MADVISE
 IOZONE_TARGET=generic
 else
 IOZONE_CPPFLAGS=
-IOZONE_TARGET=linux-arm
+# IOZONE_TARGET=linux-arm
+ifeq ($(TARGET_ARCH), x86_64)
+IOZONE_TARGET=linux-AMD64
+else
+IOZONE_TARGET=generic
+endif
 endif
 IOZONE_LDFLAGS=
 
