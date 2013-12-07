@@ -22,7 +22,7 @@
 # http://www.remotesensing.org/libtiff/
 #
 LIBTIFF_SITE=http://download.osgeo.org/libtiff
-LIBTIFF_VERSION=3.9.5
+LIBTIFF_VERSION=4.0.3
 LIBTIFF_SOURCE=tiff-$(LIBTIFF_VERSION).tar.gz
 LIBTIFF_DIR=tiff-$(LIBTIFF_VERSION)
 LIBTIFF_UNZIP=zcat
@@ -152,9 +152,9 @@ $(LIBTIFF_BUILD_DIR)/.staged: $(LIBTIFF_BUILD_DIR)/.built
 	install -m 644 $(LIBTIFF_BUILD_DIR)/libtiff/tiffconf.h $(STAGING_DIR)/opt/include
 	install -m 644 $(LIBTIFF_BUILD_DIR)/libtiff/tiffvers.h $(STAGING_DIR)/opt/include
 	install -d $(STAGING_DIR)/opt/lib
-	install -m 644 $(LIBTIFF_BUILD_DIR)/libtiff/.libs/libtiff.so.$(LIBTIFF_VERSION) $(STAGING_DIR)/opt/lib
+	install -m 644 $(LIBTIFF_BUILD_DIR)/libtiff/.libs/libtiff.so.* $(STAGING_DIR)/opt/lib
 	rm -f $(STAGING_DIR)/opt/lib/libtiff*.la
-	cd $(STAGING_DIR)/opt/lib && ln -fs libtiff.so.$(LIBTIFF_VERSION) libtiff.so.3
+	cd $(STAGING_DIR)/opt/lib && ln -fs libtiff.so.$(LIBTIFF_VERSION) libtiff.so.5
 	cd $(STAGING_DIR)/opt/lib && ln -fs libtiff.so.$(LIBTIFF_VERSION) libtiff.so
 	touch -f $@
 
