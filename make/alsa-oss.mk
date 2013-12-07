@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 ALSA-OSS_SITE=ftp://ftp.alsa-project.org/pub/oss-lib
-ALSA-OSS_VERSION=1.0.17
+ALSA-OSS_VERSION=1.0.25
 ALSA-OSS_SOURCE=alsa-oss-$(ALSA-OSS_VERSION).tar.bz2
 ALSA-OSS_DIR=alsa-oss-$(ALSA-OSS_VERSION)
 ALSA-OSS_UNZIP=bzcat
