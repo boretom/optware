@@ -12,11 +12,15 @@
 # LIBSIGC++_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
+
+
+
+
 LIBSIGC++_SITE=http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2
-LIBSIGC++_VERSION=2.2.3
-LIBSIGC++_SOURCE=libsigc++-$(LIBSIGC++_VERSION).tar.gz
+LIBSIGC++_VERSION=2.2.10
+LIBSIGC++_SOURCE=libsigc++-$(LIBSIGC++_VERSION).tar.bz2
 LIBSIGC++_DIR=libsigc++-$(LIBSIGC++_VERSION)
-LIBSIGC++_UNZIP=zcat
+LIBSIGC++_UNZIP=bzcat
 LIBSIGC++_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 LIBSIGC++_DESCRIPTION=libsigc++ implements a typesafe callback system for standard C++.
 LIBSIGC++_SECTION=libs
@@ -38,7 +42,7 @@ LIBSIGC++_CONFFILES=
 # LIBSIGC++_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-LIBSIGC++_PATCHES=$(LIBSIGC++_SOURCE_DIR)/Makefile.in.patch
+LIBSIGC++_PATCHES=
 
 #
 # If the compilation of the package requires additional
