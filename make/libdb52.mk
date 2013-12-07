@@ -21,12 +21,12 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 LIBDB52_SITE=http://download.oracle.com/berkeley-db
-LIBDB52_VERSION=5.2.28
+LIBDB52_VERSION=5.2.42
 LIBDB52_SOURCE=db-$(LIBDB52_VERSION).tar.gz
 LIBDB52_DIR=db-$(LIBDB52_VERSION)
 LIBDB52_UNZIP=zcat
 LIBDB52_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-LIBDB52_DESCRIPTION=Describe libdb52 here.
+LIBDB52_DESCRIPTION=Berkeley DB 5 Libraries
 LIBDB52_SECTION=lib
 LIBDB52_PRIORITY=optional
 LIBDB52_DEPENDS=
