@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 MINICOM_SITE=http://alioth.debian.org/frs/download.php/3487
-MINICOM_VERSION=2.5
+MINICOM_VERSION=2.6.2
 MINICOM_SOURCE=minicom-$(MINICOM_VERSION).tar.gz
 MINICOM_DIR=minicom-$(MINICOM_VERSION)
 MINICOM_UNZIP=zcat
