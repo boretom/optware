@@ -5,7 +5,7 @@
 ###########################################################
 
 BISON_SITE=http://ftp.gnu.org/gnu/bison
-BISON_VERSION=2.5.1
+BISON_VERSION=2.7.1
 BISON_SOURCE=bison-$(BISON_VERSION).tar.xz
 BISON_DIR=bison-$(BISON_VERSION)
 BISON_UNZIP=$(HOST_STAGING_PREFIX)/bin/xzcat
