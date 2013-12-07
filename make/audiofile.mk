@@ -27,16 +27,16 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 #http://ftp.acc.umu.se/pub/GNOME/sources/audiofile/0.2/audiofile-0.2.6.tar.gz
-AUDIOFILE_SITE=http://ftp.acc.umu.se/pub/GNOME/sources/audiofile/0.2
-AUDIOFILE_VERSION=0.2.6
-AUDIOFILE_SOURCE=audiofile-$(AUDIOFILE_VERSION).tar.gz
+AUDIOFILE_SITE=http://ftp.acc.umu.se/pub/GNOME/sources/audiofile/0.3
+AUDIOFILE_VERSION=0.3.6
+AUDIOFILE_SOURCE=audiofile-$(AUDIOFILE_VERSION).tar.xz
 AUDIOFILE_DIR=audiofile-$(AUDIOFILE_VERSION)
-AUDIOFILE_UNZIP=zcat
+AUDIOFILE_UNZIP=xzcat
 AUDIOFILE_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 AUDIOFILE_DESCRIPTION=Misc Audio Libraries.
 AUDIOFILE_SECTION=misc
 AUDIOFILE_PRIORITY=optional
-AUDIOFILE_DEPENDS=
+AUDIOFILE_DEPENDS=alsa-lib
 AUDIOFILE_CONFLICTS=
 
 #
@@ -105,6 +105,7 @@ audiofile-source: $(DL_DIR)/$(AUDIOFILE_SOURCE) $(AUDIOFILE_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(AUDIOFILE_BUILD_DIR)/.configured: $(DL_DIR)/$(AUDIOFILE_SOURCE) $(AUDIOFILE_PATCHES) make/audiofile.mk
+	$(MAKE) alsa-lib-stage
 	rm -rf $(BUILD_DIR)/$(AUDIOFILE_DIR) $(AUDIOFILE_BUILD_DIR)
 	$(AUDIOFILE_UNZIP) $(DL_DIR)/$(AUDIOFILE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(AUDIOFILE_PATCHES)" ; \
@@ -211,3 +212,9 @@ audiofile-clean:
 #
 audiofile-dirclean:
 	rm -rf $(BUILD_DIR)/$(AUDIOFILE_DIR) $(AUDIOFILE_BUILD_DIR) $(AUDIOFILE_IPK_DIR) $(AUDIOFILE_IPK)
+
+#
+# Some sanity check for the package.
+#
+audiofile-check: $(AUDIOFILE_IPK)
+	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
