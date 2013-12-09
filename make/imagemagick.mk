@@ -21,8 +21,8 @@
 #
 IMAGEMAGICK_SITE=ftp://ftp.imagemagick.org/pub/ImageMagick
 ifneq ($(OPTWARE_TARGET), $(filter wl500g mss, $(OPTWARE_TARGET)))
-IMAGEMAGICK_VER=6.6.9
-IMAGEMAGICK_REV=1
+IMAGEMAGICK_VER=6.8.7
+IMAGEMAGICK_REV=8
 IMAGEMAGICK_IPK_VERSION=1
 IMAGEMAGICK_SOURCE=ImageMagick-$(IMAGEMAGICK_VER)-$(IMAGEMAGICK_REV).tar.bz2
 IMAGEMAGICK_UNZIP=bzcat
@@ -38,6 +38,9 @@ ifeq ($(LIBC_STYLE), uclibc)
 IMAGEMAGICK_PATCHES=$(IMAGEMAGICK_SOURCE_DIR)/uClibc-errno.patch
 endif
 endif
+# should be in an ifeq but what to check for?
+IMAGEMAGICK_PATCHES=$(IMAGEMAGICK_SOURCE_DIR)/cannot-run-test-cross-compile.patch
+
 IMAGEMAGICK_VERSION=$(IMAGEMAGICK_VER).$(IMAGEMAGICK_REV)
 IMAGEMAGICK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 IMAGEMAGICK_DESCRIPTION=A set of image processing utilities.
@@ -132,6 +135,8 @@ $(IMAGEMAGICK_BUILD_DIR)/.configured: $(DL_DIR)/$(IMAGEMAGICK_SOURCE) $(IMAGEMAG
 		--with-tiff \
 		--with-freetype \
 		--without-gslib \
+		--without-pango \
+		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
