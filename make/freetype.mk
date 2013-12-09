@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 FREETYPE_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/freetype
-FREETYPE_VERSION=2.3.6
+FREETYPE_VERSION=2.5.0
 FREETYPE_SOURCE=freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_DIR=freetype-$(FREETYPE_VERSION)
 FREETYPE_UNZIP=bzcat
