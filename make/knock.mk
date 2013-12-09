@@ -4,8 +4,8 @@
 # 
 ###########################################################
 #
-KNOCK_SITE=http://www.zeroflux.org/knock/files
-KNOCK_VERSION=0.5
+KNOCK_SITE=http://www.zeroflux.org/proj/knock/files
+KNOCK_VERSION=0.6
 KNOCK_SOURCE=knock-$(KNOCK_VERSION).tar.gz
 KNOCK_DIR=knock-$(KNOCK_VERSION)
 KNOCK_UNZIP=zcat
@@ -163,7 +163,7 @@ $(KNOCK_IPK): $(KNOCK_BUILD_DIR)/.built
 	rm -rf $(KNOCK_IPK_DIR) $(BUILD_DIR)/knock_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(KNOCK_BUILD_DIR) DESTDIR=$(KNOCK_IPK_DIR) install
 	$(STRIP_COMMAND) $(KNOCK_IPK_DIR)/opt/*bin/*
-	mv $(KNOCK_IPK_DIR)/etc $(KNOCK_IPK_DIR)/opt/
+	#mv $(KNOCK_IPK_DIR)/etc $(KNOCK_IPK_DIR)/opt/
 	install -d $(KNOCK_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(KNOCK_SOURCE_DIR)/rc.knockd $(KNOCK_IPK_DIR)/opt/etc/init.d/S05knockd
 ifneq (nslu2, $(OPTWARE_TARGET))
