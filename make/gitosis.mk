@@ -10,6 +10,7 @@
 #
 
 GITOSIS_REPOSITORY=git://eagain.net/gitosis.git
+GITOSIS_REPOSITORY=https://github.com/Ancient/gitosis.git
 GITOSIS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GITOSIS_DESCRIPTION=Git repository hosting application.
 GITOSIS_SECTION=misc
@@ -28,9 +29,9 @@ GITOSIS_CONFLICTS=
 # GITOSIS_GIT_DATE
 #
 
-GITOSIS_GIT_DATE=20090917
+GITOSIS_GIT_DATE=20120910
 GITOSIS_VERSION=git$(GITOSIS_GIT_DATE)
-GITOSIS_TREEISH=`git rev-list --max-count=1 --until=2009-09-17 HEAD`
+GITOSIS_TREEISH=`git rev-list --max-count=1 --until=2012-09-10 HEAD`
 
 #
 # If you want to use a tag, uncomment the variables below and modify
