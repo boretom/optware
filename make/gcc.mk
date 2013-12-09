@@ -39,7 +39,7 @@ GCC_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GCC_DESCRIPTION=The GNU Compiler Collection.
 GCC_SECTION=base
 GCC_PRIORITY=optional
-GCC_DEPENDS=binutils, libc-dev
+GCC_DEPENDS=binutils, libc-dev, libgmp, libmpfr, libmpc
 GCC_SUGGESTS=
 GCC_CONFLICTS=
 
@@ -70,7 +70,7 @@ GCC_BUILD_EXTRA_ENV ?=
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-GCC_CPPFLAGS=
+GCC_CPPFLAGS=-I$(STAGING_INCLUDE_DIR)
 GCC_LDFLAGS=
 
 GCC_IPK_DIR=$(BUILD_DIR)/gcc-$(GCC_VERSION)-ipk
@@ -108,10 +108,15 @@ gcc-source: $(DL_DIR)/$(GCC_SOURCE) $(GCC_PATCHES)
 
 
 $(GCC_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GCC_SOURCE) make/gcc.mk
+	$(MAKE) libgmp-stage libmpfr-stage libmpc-stage
 	rm -rf $(HOST_BUILD_DIR)/$(GCC_DIR) $(@D)
 	$(GCC_UNZIP) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
 	mv $(HOST_BUILD_DIR)/$(GCC_DIR) $(@D)
 	(cd $(@D); \
+		LD_LIBRARY_PATH="$(STAGING_DIR)/opt/lib" \
+		CFLAGS="-I$(STAGING_INCLUDE_DIR)/" \
+		CPPFLAGS=$(CFLAGS) \
+		LDFLAGS="-L$(STAGING_LIBDIR)" \
 		./configure \
 		--prefix=$(HOST_STAGING_PREFIX)	\
 		--program-suffix="-$(GCC_HOST_PROGRAM_SUFFIX)" \
@@ -166,6 +171,9 @@ $(GCC_BUILD_DIR)/.configured: $(DL_DIR)/$(GCC_SOURCE) $(GCC_PATCHES) #make/gcc.m
 		--host=$(GCC_TARGET_NAME) \
 		--target=$(GCC_TARGET_NAME) \
 		--prefix=/opt \
+		--with-gmp=$(STAGING_DIR)/opt \
+		--with-mpfr=$(STAGING_DIR)/opt \
+		--with-mpc=$(STAGING_DIR)/opt \
 		--disable-nls \
 		--disable-static \
 		--with-as=$(TARGET_AS) \
