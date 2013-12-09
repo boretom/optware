@@ -27,9 +27,10 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 LIBGC_SITE=http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source
-LIBGC_VERSION=6.8
-LIBGC_SOURCE=gc$(LIBGC_VERSION).tar.gz
-LIBGC_DIR=gc$(LIBGC_VERSION)
+LIBGC_VERSION=7.2
+LIBGC_REV=e
+LIBGC_SOURCE=gc-$(LIBGC_VERSION)$(LIBGC_REV).tar.gz
+LIBGC_DIR=gc-$(LIBGC_VERSION)
 LIBGC_UNZIP=zcat
 LIBGC_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 LIBGC_DESCRIPTION=The Boehm-Demers-Weiser conservative garbage collector can be used as a garbage collecting replacement for C malloc or C++ new.
