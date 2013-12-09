@@ -115,7 +115,6 @@ $(LIBXSLT_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBXSLT_SOURCE) $(LIBXSLT_PATCHES)
 		--enable-shared \
 		--without-python \
 		--without-crypto \
-		--with-libxml-prefix=$(STAGING_PREFIX) \
 		--with-libxml-libs-prefix=$(STAGING_LIB_DIR) \
 		--with-libxml-include-prefix=$(STAGING_INCLUDE_DIR) \
 	)
