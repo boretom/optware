@@ -29,7 +29,7 @@ ZILE_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ZILE_DESCRIPTION=Zile is Lossy Emacs, a small, fast, and powerful Emacs clone.
 ZILE_SECTION=editor
 ZILE_PRIORITY=optional
-ZILE_DEPENDS=ncurses
+ZILE_DEPENDS=ncurses, libgc
 ZILE_SUGGESTS=
 ZILE_CONFLICTS=
 
@@ -105,7 +105,7 @@ zile-source: $(DL_DIR)/$(ZILE_SOURCE) $(ZILE_PATCHES)
 # shown below to make various patches to it.
 #
 $(ZILE_BUILD_DIR)/.configured: $(DL_DIR)/$(ZILE_SOURCE) $(ZILE_PATCHES) make/zile.mk
-	$(MAKE) ncurses-stage
+	$(MAKE) ncurses-stage libgc-stage
 	rm -rf $(BUILD_DIR)/$(ZILE_DIR) $(@D)
 	$(ZILE_UNZIP) $(DL_DIR)/$(ZILE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(ZILE_PATCHES)" ; \
