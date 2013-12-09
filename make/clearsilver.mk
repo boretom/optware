@@ -119,10 +119,10 @@ $(CLEARSILVER_BUILD_DIR)/.configured: $(DL_DIR)/$(CLEARSILVER_SOURCE) $(CLEARSIL
 	(cd $(CLEARSILVER_BUILD_DIR); \
 	    ( \
 		echo "[build_ext]"; \
-	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.4"; \
+	        echo "include-dirs=$(STAGING_INCLUDE_DIR):$(STAGING_INCLUDE_DIR)/python2.5"; \
 	        echo "library-dirs=$(STAGING_LIB_DIR)"; \
 		echo "[build_scripts]"; \
-		echo "executable=/opt/bin/python2.4"; \
+		echo "executable=/opt/bin/python2.5"; \
 		echo "[install]"; \
 		echo "install_scripts=/opt/bin"; \
 	    ) > python/setup.cfg; \
@@ -145,7 +145,7 @@ $(CLEARSILVER_BUILD_DIR)/.configured: $(DL_DIR)/$(CLEARSILVER_SOURCE) $(CLEARSIL
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(CLEARSILVER_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(CLEARSILVER_LDFLAGS)" \
-		PYTHON_SITE="/opt/lib/python2.4/site-packages" \
+		PYTHON_SITE="/opt/lib/python2.5/site-packages" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -156,7 +156,7 @@ $(CLEARSILVER_BUILD_DIR)/.configured: $(DL_DIR)/$(CLEARSILVER_SOURCE) $(CLEARSIL
 		--disable-java \
 		--disable-perl \
 		--enable-python \
-		--with-python=$(HOST_STAGING_PREFIX)/bin/python2.4 \
+		--with-python=$(HOST_STAGING_PREFIX)/bin/python2.5 \
 		--disable-ruby \
 		--disable-nls \
 		--disable-static \
