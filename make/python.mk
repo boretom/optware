@@ -4,7 +4,7 @@
 #
 ###########################################################
 
-PYTHON_VERSION=2.5
+PYTHON_VERSION=2.7
 PYTHON_DIR=python-$(PYTHON_VERSION)
 PYTHON_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 PYTHON_DESCRIPTION=This is a package that sets up the default python.
@@ -24,9 +24,9 @@ python-unpack:
 python:
 
 python-stage:
-	$(MAKE) python24-stage python24-host-stage
 	$(MAKE) python25-stage python25-host-stage
 	$(MAKE) python26-stage python26-host-stage
+	$(MAKE) python27-stage python26-host-stage
 
 $(PYTHON_IPK_DIR)/CONTROL/control:
 	@install -d $(PYTHON_IPK_DIR)/CONTROL
