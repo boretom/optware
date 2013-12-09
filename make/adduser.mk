@@ -102,13 +102,13 @@ adduser-source: $(DL_DIR)/$(BUSYBOX_SOURCE)
 # If the compilation of the package requires other packages to be staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
-$(ADDUSER_BUILD_DIR)/.configured: $(ADDUSER_SOURCE_DIR)/defconfig make/adduser.mk
+$(ADDUSER_BUILD_DIR)/.configured: $(ADDUSER_SOURCE_DIR)/defconfig.v$(ADDUSER_VERSION) make/adduser.mk
 	$(MAKE) $(DL_DIR)/$(BUSYBOX_SOURCE)
 	rm -rf $(BUILD_DIR)/$(BUSYBOX_DIR) $(ADDUSER_BUILD_DIR)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(ADDUSER_PATCHES) | patch -d $(BUILD_DIR)/$(BUSYBOX_DIR) -p1
 	mv $(BUILD_DIR)/$(BUSYBOX_DIR) $(ADDUSER_BUILD_DIR)
-	cp $(ADDUSER_SOURCE_DIR)/defconfig $(ADDUSER_BUILD_DIR)/.config
+	cp $(ADDUSER_SOURCE_DIR)/defconfig.v$(ADDUSER_VERSION) $(ADDUSER_BUILD_DIR)/.config
 ifeq (module-init-tools, $(filter module-init-tools, $(PACKAGES)))
 ifneq ($(OPTWARE_TARGET), $(filter fsg3v4 syno-x07, $(OPTWARE_TARGET)))
 # default off, turn on if linux 2.6
