@@ -22,7 +22,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 GIT_SITE=http://git-core.googlecode.com/files
-GIT_VERSION=1.8.4.2
+GIT_VERSION=1.8.4.3
 GIT_IPK_VERSION=1
 GIT_SOURCE=git-$(GIT_VERSION).tar.gz
 GIT_DIR=git-$(GIT_VERSION)
@@ -41,7 +41,7 @@ endif
 GIT_SUGGESTS=git-manpages
 GIT_CONFLICTS=
 
-GIT-LITE_VERSION=1.6.6.2
+GIT-LITE_VERSION=1.8.4.3
 GIT-LITE_IPK_VERSION=1
 GIT-LITE_SOURCE=git-$(GIT-LITE_VERSION).tar.gz
 GIT-LITE_DIR=git-$(GIT-LITE_VERSION)
@@ -60,7 +60,8 @@ GIT-MANPAGES_SOURCE=git-manpages-$(GIT_VERSION).tar.gz
 # which they should be applied to the source code.
 #
 GIT_PATCHES=$(GIT_SOURCE_DIR)/Makefile.patch $(GIT_SOURCE_DIR)/ssh-path.patch
-GIT-LITE_PATCHES=$(GIT_SOURCE_DIR)/Makefile-1.6.patch $(GIT_SOURCE_DIR)/ssh-path.patch
+#GIT-LITE_PATCHES=$(GIT_SOURCE_DIR)/Makefile-1.6.patch $(GIT_SOURCE_DIR)/ssh-path.patch
+GIT-LITE_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -228,7 +229,7 @@ ifneq (,$(filter perl, $(PACKAGES)))
 endif
 	rm -rf $(BUILD_DIR)/$(GIT-LITE_DIR) $(@D)
 	$(GIT_UNZIP) $(DL_DIR)/$(GIT-LITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	if test -n "$(GIT_PATCHES)" ; \
+	if test -n "$(GIT-LITE_PATCHES)" ; \
 		then cat $(GIT-LITE_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(GIT-LITE_DIR) -p1 ; \
 	fi
