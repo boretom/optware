@@ -22,7 +22,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 BLUEZ2-LIBS_SITE=http://bluez.sf.net/download
-BLUEZ2-LIBS_VERSION=2.25
+BLUEZ2-LIBS_VERSION=3.36
 BLUEZ2-LIBS_SOURCE=bluez-libs-$(BLUEZ2-LIBS_VERSION).tar.gz
 BLUEZ2-LIBS_DIR=bluez-libs-$(BLUEZ2-LIBS_VERSION)
 BLUEZ2-LIBS_UNZIP=zcat
