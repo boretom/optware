@@ -52,8 +52,7 @@ LIBGMP_IPK_VERSION=1
 #
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
-#
-LIBGMP_CPPFLAGS=
+# LIBGMP_CPPFLAGS=
 LIBGMP_LDFLAGS=
 
 #
@@ -134,7 +133,7 @@ $(LIBGMP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGMP_SOURCE) $(LIBGMP_PATCHES) ma
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		--disable-nls \
+		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
