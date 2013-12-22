@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 DISTCC_SITE=http://distcc.googlecode.com/files
-DISTCC_VERSION=3.1
+DISTCC_VERSION=3.2rc1
 DISTCC_SOURCE=distcc-$(DISTCC_VERSION).tar.bz2
 DISTCC_DIR=distcc-$(DISTCC_VERSION)
 DISTCC_UNZIP=bzcat
@@ -41,7 +41,8 @@ DISTCC_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 DISTCC_PATCHES=$(DISTCC_SOURCE_DIR)/src-snprintf.patch \
-$(DISTCC_SOURCE_DIR)/lzo-minilzo.c.patch
+$(DISTCC_SOURCE_DIR)/lzo-minilzo.c.patch \
+$(DISTCC_SOURCE_DIR)/unused-var.patch
 
 #
 # If the compilation of the package requires additional
@@ -104,9 +105,9 @@ $(DISTCC_BUILD_DIR)/.configured: $(DL_DIR)/$(DISTCC_SOURCE) $(DISTCC_PATCHES) ma
 	mv $(BUILD_DIR)/$(DISTCC_DIR) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(DISTCC_CPPFLAGS)" \
+		CPPFLAGS="$(STAGING_CPPFLAGS) -I$(STAGING_DIR)/opt/include/python2.5 $(DISTCC_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(DISTCC_LDFLAGS)" \
-		PYTHON=/opt/bin/python2.5 \
+		PYTHON=$(STAGING_DIR)/opt/bin/python2.5 \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
