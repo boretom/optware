@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 OPENLDAP_SITE=ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release
-OPENLDAP_VERSION=2.3.43
+OPENLDAP_VERSION=2.4.38
 OPENLDAP_SOURCE=openldap-$(OPENLDAP_VERSION).tgz
 OPENLDAP_DIR=openldap-$(OPENLDAP_VERSION)
 OPENLDAP_UNZIP=zcat
@@ -28,7 +28,7 @@ OPENLDAP_MAINTAINER=Joerg Berg <caplink@gmx.net>
 OPENLDAP_DESCRIPTION=Open Lightweight Directory Access Protocol
 OPENLDAP_SECTION=net
 OPENLDAP_PRIORITY=optional
-OPENLDAP_DEPENDS=openssl, libdb, gdbm, cyrus-sasl-libs, psmisc
+OPENLDAP_DEPENDS=openssl, libdb52, gdbm, cyrus-sasl-libs, psmisc
 OPENLDAP_CONFLICTS=
 
 #
@@ -51,7 +51,7 @@ OPENLDAP_PATCHES=$(OPENLDAP_SOURCE_DIR)/hostcc.patch
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-OPENLDAP_CPPFLAGS=
+OPENLDAP_CPPFLAGS=-D_GNU_SOURCE -I$(STAGING_INCLUDE_DIR)/db5
 OPENLDAP_LDFLAGS=
 
 OPENLDAP_CONFIGURE_OPTIONS=--with-yielding-select=yes
@@ -110,14 +110,14 @@ openldap-source: $(DL_DIR)/$(OPENLDAP_SOURCE) $(OPENLDAP_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(OPENLDAP_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENLDAP_SOURCE) $(OPENLDAP_PATCHES) make/openldap.mk
-	$(MAKE) libdb-stage openssl-stage gdbm-stage cyrus-sasl-stage
+	$(MAKE) libdb52-stage openssl-stage gdbm-stage cyrus-sasl-stage
 	rm -rf $(BUILD_DIR)/$(OPENLDAP_DIR) $(@D)
 	$(OPENLDAP_UNZIP) $(DL_DIR)/$(OPENLDAP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(OPENLDAP_PATCHES) | patch -d $(BUILD_DIR)/$(OPENLDAP_DIR) -p1
 	mv $(BUILD_DIR)/$(OPENLDAP_DIR) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(OPENLDAP_CPPFLAGS)" \
+		CPPFLAGS="$(OPENLDAP_CPPFLAGS) $(STAGING_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(OPENLDAP_LDFLAGS)" \
 		ac_cv_func_memcmp_working=yes \
 		./configure \
