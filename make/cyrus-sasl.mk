@@ -45,7 +45,8 @@ CYRUS-SASL_CONFFILES=/opt/etc/init.d/S52saslauthd
 #
 CYRUS-SASL_PATCHES=$(CYRUS-SASL_SOURCE_DIR)/Makefile.in.patch \
   $(CYRUS-SASL_SOURCE_DIR)/configure-powerpc.patch \
-  $(CYRUS-SASL_SOURCE_DIR)/include-Makefile.in.patch
+  $(CYRUS-SASL_SOURCE_DIR)/include-Makefile.in.patch \
+  $(CYRUS-SASL_SOURCE_DIR)/digestmd5.c.patch
 
 CYRUS-SASL_BUILD_DIR=$(BUILD_DIR)/cyrus-sasl
 CYRUS-SASL_SOURCE_DIR=$(SOURCE_DIR)/cyrus-sasl
