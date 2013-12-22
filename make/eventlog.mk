@@ -5,8 +5,8 @@
 ###########################################################
 
 EVENTLOG_SITE=http://www.balabit.com/downloads/files/syslog-ng/sources/stable/src
-EVENTLOG_VERSION=0.2.7
-EVENTLOG_SOURCE=eventlog-$(EVENTLOG_VERSION).tar.gz
+EVENTLOG_VERSION=0.2.13
+EVENTLOG_SOURCE=eventlog_$(EVENTLOG_VERSION).tar.gz
 EVENTLOG_DIR=eventlog-$(EVENTLOG_VERSION)
 EVENTLOG_UNZIP=zcat
 EVENTLOG_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
