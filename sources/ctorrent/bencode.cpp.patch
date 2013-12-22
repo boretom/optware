@@ -1,0 +1,11 @@
+--- dir/bencode.cpp.orig	2013-11-27 15:49:41.673302456 +0100
++++ dir/bencode.cpp	2013-11-27 15:48:00.625302456 +0100
+@@ -206,7 +206,7 @@
+   if( bencode_begin_list(fp) != 1 ) return 0;
+   
+   for(; *p;){
+-    pn = strchr(p, PATH_SP);
++    pn = strchr((char *)p, PATH_SP);
+     if( pn ){
+       if( bencode_buf(p, pn - p, fp) != 1) return 0;
+       p = pn + 1;

@@ -43,7 +43,8 @@ CTORRENT_PATCHES=$(CTORRENT_SOURCE_DIR)/align.patch \
 		$(CTORRENT_SOURCE_DIR)/getcwd.patch \
 		$(CTORRENT_SOURCE_DIR)/stall.patch \
 		$(CTORRENT_SOURCE_DIR)/tracker.patch \
-		$(CTORRENT_SOURCE_DIR)/passkey.patch
+		$(CTORRENT_SOURCE_DIR)/passkey.patch \
+		$(CTORRENT_SOURCE_DIR)/bencode.cpp.patch \
 
 #
 # If the compilation of the package requires additional
