@@ -46,6 +46,7 @@ FLAC_CONFFILES=
 # which they should be applied to the source code.
 #
 #FLAC_PATCHES=$(FLAC_SOURCE_DIR)/configure.patch
+FLAC_PATCHES=$(FLAC_SOURCE_DIR)/main.cpp.patch
 
 #
 # If the compilation of the package requires additional
