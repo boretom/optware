@@ -86,6 +86,7 @@ $(CPIO_BUILD_DIR)/.configured: $(DL_DIR)/$(CPIO_SOURCE) $(CPIO_PATCHES) make/cpi
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(CPIO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(CPIO_LDFLAGS)" \
+		ac_cv_prog_cc_c99=no \
 		./configure \
 		CPIO_MT_PROG=mt \
 		--build=$(GNU_HOST_NAME) \
