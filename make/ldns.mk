@@ -196,7 +196,7 @@ $(LDNS_IPK_DIR)/CONTROL/control:
 $(LDNS_IPK): $(LDNS_BUILD_DIR)/.built
 	rm -rf $(LDNS_IPK_DIR) $(BUILD_DIR)/ldns_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LDNS_BUILD_DIR) DESTDIR=$(LDNS_IPK_DIR) install
-	$(STRIP_COMMAND) $(LDNS_IPK_DIR)/opt/lib/libldns.so.1.6.12
+	$(STRIP_COMMAND) $(LDNS_IPK_DIR)/opt/lib/libldns.so.$(LDNS_VERSION)
 #	install -d $(LDNS_IPK_DIR)/opt/etc/
 #	install -m 644 $(LDNS_SOURCE_DIR)/ldns.conf $(LDNS_IPK_DIR)/opt/etc/ldns.conf
 #	install -d $(LDNS_IPK_DIR)/opt/etc/init.d
