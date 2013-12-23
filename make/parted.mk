@@ -9,8 +9,7 @@
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
 
-#
-# PARTED_VERSION, PARTED_SITE and PARTED_SOURCE define
+# # PARTED_VERSION, PARTED_SITE and PARTED_SOURCE define
 # the upstream location of the source code for the package.
 # PARTED_DIR is the directory which is created when the source
 # archive is unpacked.
@@ -20,10 +19,10 @@
 # You should change all these variables to suit your package.
 #
 PARTED_SITE=http://ftp.gnu.org/gnu/parted/
-PARTED_VERSION=1.7.1
-PARTED_SOURCE=parted-$(PARTED_VERSION).tar.gz
+PARTED_VERSION=3.1
+PARTED_SOURCE=parted-$(PARTED_VERSION).tar.xz
 PARTED_DIR=parted-$(PARTED_VERSION)
-PARTED_UNZIP=zcat
+PARTED_UNZIP=xzcat
 PARTED_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 PARTED_DESCRIPTION=GNU partition editor
 PARTED_SECTION=sys
@@ -121,6 +120,7 @@ $(PARTED_BUILD_DIR)/.configured: $(DL_DIR)/$(PARTED_SOURCE) $(PARTED_PATCHES) ma
 		--disable-Werror \
 		--disable-nls \
 		--disable-static \
+		--disable-device-mapper \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
