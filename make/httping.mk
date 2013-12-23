@@ -52,7 +52,7 @@ HTTPING_PATCHES=$(HTTPING_SOURCE_DIR)/mem.c.patch
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-HTTPING_CPPFLAGS=
+HTTPING_CPPFLAGS=-D_GNU_SOURCE
 HTTPING_LDFLAGS=-lssl -lcrypto
 
 #
