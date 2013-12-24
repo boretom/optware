@@ -46,6 +46,11 @@ LIBMAD_CONFFILES=
 # which they should be applied to the source code.
 #
 LIBMAD_PATCHES=$(LIBMAD_SOURCE_DIR)/libmad-0.15.1b-pkgconfig.patch
+# check if GCC version >= 4.3 -> -fforce-mem not supported anymore
+GCCVERSIONGT43 := $(shell echo "`echo $(GCC_VERSION) | cut -b 1-3` >= 4.3" | bc )
+ifeq "$(GCCVERSIONGT43)" "1"
+LIBMAD_PATCHES+=$(LIBMAD_SOURCE_DIR)/configure.ac.gcc-43.patch
+endif
 
 #
 # If the compilation of the package requires additional

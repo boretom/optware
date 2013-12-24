@@ -1,0 +1,18 @@
+--- libmad/configure.ac.orig	2013-12-23 21:40:22.581664957 +0100
++++ libmad/configure.ac	2013-12-23 21:49:02.185664329 +0100
+@@ -140,7 +140,6 @@
+     case "$optimize" in
+ 	-O|"-O "*)
+ 	    optimize="-O"
+-	    optimize="$optimize -fforce-mem"
+ 	    optimize="$optimize -fforce-addr"
+ 	    : #x optimize="$optimize -finline-functions"
+ 	    : #- optimize="$optimize -fstrength-reduce"
+@@ -297,6 +296,7 @@
+ then
+     case "$host" in
+ 	i?86-*)     FPM="INTEL"  ;;
++	x86_64*)    FPM="64BIT"  ;;
+ 	arm*-*)     FPM="ARM"    ;;
+ 	mips*-*)    FPM="MIPS"   ;;
+ 	sparc*-*)   FPM="SPARC"  ;;
