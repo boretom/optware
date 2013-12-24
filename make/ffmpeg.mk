@@ -21,9 +21,14 @@
 #
 # Check http://svn.mplayerhq.hu/ffmpeg/trunk/
 # Take care when upgrading for multiple targets
-FFMPEG_SVN=svn://svn.mplayerhq.hu/ffmpeg/trunk
-FFMPEG_SVN_DATE=20080409
-FFMPEG_VERSION=0.svn$(FFMPEG_SVN_DATE)
+FFMPEG_SITE=http://ffmpeg.org/releases
+#FFMPEG_GIT_COMMIT=ba728c1a
+ifdef FFMPEG_GIT_COMMIT
+FFMPEG_GIT=git://source.ffmpeg.org/ffmpeg.git
+FFMPEG_VERSION=2.1.git-$(FFMPEG_GIT_COMMIT)
+else
+FFMPEG_VERSION=2.1.1
+endif
 FFMPEG_DIR=ffmpeg-$(FFMPEG_VERSION)
 FFMPEG_SOURCE=$(FFMPEG_DIR).tar.bz2
 FFMPEG_UNZIP=bzcat
@@ -31,7 +36,7 @@ FFMPEG_MAINTAINER=Keith Garry Boyce <nslu2-linux@yahoogroups.com>
 FFMPEG_DESCRIPTION=FFmpeg is an audio/video conversion tool.
 FFMPEG_SECTION=tool
 FFMPEG_PRIORITY=optional
-FFMPEG_DEPENDS=
+FFMPEG_DEPENDS=alsa-lib
 FFMPEG_SUGGESTS=
 FFMPEG_CONFLICTS=
 
@@ -88,13 +93,21 @@ FFMPEG_IPK=$(BUILD_DIR)/ffmpeg_$(FFMPEG_VERSION)-$(FFMPEG_IPK_VERSION)_$(TARGET_
 #	$(WGET) -P $(DL_DIR) $(FFMPEG_SITE)/$(FFMPEG_SOURCE)
 
 $(DL_DIR)/$(FFMPEG_SOURCE):
+ifdef FFMPEG_GIT_COMMIT
 	( cd $(BUILD_DIR) ; \
+		test $(FFMPEG_DIR) || \
 		rm -rf $(FFMPEG_DIR) && \
-		svn co -r '{$(FFMPEG_SVN_DATE)}' $(FFMPEG_SVN) $(FFMPEG_DIR) && \
-		tar -cjf $@ $(FFMPEG_DIR) --exclude .svn && \
+		git clone $(FFMPEG_GIT) $(FFMPEG_DIR) && \
+		cd $(FFMPEG_DIR) && \
+		git checkout -b ba728c1 && \
+		cd $(BUILD_DIR) && \
+		tar -cjf $@ $(FFMPEG_DIR) --exclude .git && \
 		rm -rf $(FFMPEG_DIR) \
 	)
-
+else
+	$(WGET) -P $(@D) $(FFMPEG_SITE)/$(@F) || \
+	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+endif
 
 #
 # The source code depends on it existing within the download directory.
@@ -140,10 +153,12 @@ $(FFMPEG_BUILD_DIR)/.configured: $(DL_DIR)/$(FFMPEG_SOURCE) $(FFMPEG_PATCHES) ma
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(FFMPEG_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(FFMPEG_LDFLAGS)" \
+		PKG_CONFIG_PATH="$(STAGING_DIR)/opt/lib/pkgconfig/" \
 		./configure \
 		--enable-cross-compile \
 		--cross-prefix=$(TARGET_CROSS) \
 		--arch=$(FFMPEG_ARCH) \
+		--target-os=linux \
 		$(FFMPEG_CONFIG_OPTS) \
 		--disable-encoder=snow \
 		--disable-decoder=snow \
@@ -153,15 +168,13 @@ $(FFMPEG_BUILD_DIR)/.configured: $(DL_DIR)/$(FFMPEG_SOURCE) $(FFMPEG_PATCHES) ma
 		--enable-postproc \
 		--prefix=/opt \
 	)
+
 ifeq ($(LIBC_STYLE), uclibc)
 #	No lrintf() support in uClibc 0.9.28
 	sed -i -e 's/-D_ISOC9X_SOURCE//g' $(@D)/common.mak $(@D)/Makefile $(@D)/lib*/Makefile
 endif
 	sed -i -e '/^OPTFLAGS/s| -O3| $(TARGET_CUSTOM_FLAGS) $(FFMPEG_CPPFLAGS) $$(OPTLEVEL)|' $(@D)/config.mak
 	touch $@
-#		--host=$(GNU_TARGET_NAME) \
-#		--target=$(GNU_TARGET_NAME) \
-##		--disable-nls \
 
 ffmpeg-unpack: $(FFMPEG_BUILD_DIR)/.configured
 
@@ -188,19 +201,20 @@ $(FFMPEG_BUILD_DIR)/.staged: $(FFMPEG_BUILD_DIR)/.built
 	rm -f $@
 	rm -rf $(STAGING_INCLUDE_DIR)/ffmpeg $(STAGING_INCLUDE_DIR)/postproc
 	$(MAKE) -C $(@D) install \
-		mandir=$(STAGING_DIR)/opt/man \
-		bindir=$(STAGING_DIR)/opt/bin \
-		prefix=$(STAGING_DIR)/opt \
+		prefix=/opt \
 		DESTDIR=$(STAGING_DIR)
-	install -d $(STAGING_INCLUDE_DIR)/ffmpeg $(STAGING_INCLUDE_DIR)/postproc
-	cp -p	$(STAGING_INCLUDE_DIR)/libavcodec/* \
-		$(STAGING_INCLUDE_DIR)/libavformat/* \
-		$(STAGING_INCLUDE_DIR)/libavutil/* \
-		$(STAGING_INCLUDE_DIR)/ffmpeg/
-	cp -p	$(STAGING_INCLUDE_DIR)/libpostproc/* \
-		$(STAGING_INCLUDE_DIR)/postproc/
+#	install -d $(STAGING_INCLUDE_DIR)/ffmpeg $(STAGING_INCLUDE_DIR)/postproc
+#	cp -p	$(STAGING_INCLUDE_DIR)/libavcodec/* \
+#		$(STAGING_INCLUDE_DIR)/libavformat/* \
+#		$(STAGING_INCLUDE_DIR)/libavutil/* \
+#		$(STAGING_INCLUDE_DIR)/ffmpeg/
+#	cp -p	$(STAGING_INCLUDE_DIR)/libpostproc/* \
+#		$(STAGING_INCLUDE_DIR)/postproc/
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' \
+		$(STAGING_LIB_DIR)/pkgconfig/libswresample.pc \
+		$(STAGING_LIB_DIR)/pkgconfig/libswscale.pc \
 		$(STAGING_LIB_DIR)/pkgconfig/libavcodec.pc \
+		$(STAGING_LIB_DIR)/pkgconfig/libavfilter.pc \
 		$(STAGING_LIB_DIR)/pkgconfig/libavformat.pc \
 		$(STAGING_LIB_DIR)/pkgconfig/libavutil.pc \
 		$(STAGING_LIB_DIR)/pkgconfig/libpostproc.pc
@@ -241,15 +255,13 @@ $(FFMPEG_IPK_DIR)/CONTROL/control:
 #
 $(FFMPEG_IPK): $(FFMPEG_BUILD_DIR)/.built
 	rm -rf $(FFMPEG_IPK_DIR) $(BUILD_DIR)/ffmpeg_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(FFMPEG_BUILD_DIR) mandir=$(FFMPEG_IPK_DIR)/opt/man \
-		bindir=$(FFMPEG_IPK_DIR)/opt/bin libdir=$(FFMPEG_IPK_DIR)/opt/lib \
-		prefix=$(FFMPEG_IPK_DIR)/opt DESTDIR=$(FFMPEG_IPK_DIR) \
-		LDCONFIG='$$(warning ldconfig disabled when building package)' install
-	$(TARGET_STRIP) $(FFMPEG_IPK_DIR)/opt/bin/ffmpeg
-	$(TARGET_STRIP) $(FFMPEG_IPK_DIR)/opt/bin/ffserver
-	$(TARGET_STRIP) $(FFMPEG_IPK_DIR)/opt/lib/*.so
-	$(TARGET_STRIP) $(FFMPEG_IPK_DIR)/opt/lib/vhook/*.so
 	$(MAKE) $(FFMPEG_IPK_DIR)/CONTROL/control
+	$(MAKE) -C $(FFMPEG_BUILD_DIR) DESTDIR=${FFMPEG_IPK_DIR} install-progs
+
+#	$(MAKE) -C $(FFMPEG_BUILD_DIR) mandir=/opt/man \
+#		bindir=/opt/bin libdir=/opt/lib \
+#		prefix=$(FFMPEG_IPK_DIR)/opt  install
+	#$(MAKE) $(FFMPEG_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(FFMPEG_IPK_DIR)
 
 #
