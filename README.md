@@ -13,7 +13,9 @@ Compiling is done on Ubuntu 12.04 32-bit and 64-bit. Install the following packa
 
 ````
 sudo apt-get install gcc git cvs flex bison make pkg-config rsync gettext libglib2.0-dev \
-	autoconf libtool automake automake1.9 sudo patch bzip2 gzip wget sed texinfo subversion
+	autoconf libtool automake automake1.9 sudo patch bzip2 gzip wget sed texinfo subversion \
+	libwwww-perl libxml-perl gcj openjdk-7-jdk autopoint asciidoc mercurial libss0.9.8 \
+	libssl1.0.0 yasm intltool txt2man docbook2x openssh-server ocaml cmake libcppunit-dev
 ````
 
 How to build a package
