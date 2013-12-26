@@ -31,6 +31,7 @@ DELEGATE_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 #DELEGATE_PATCHES=$(DELEGATE_SOURCE_DIR)/configure.patch
+DELEGATE_PATCHES=$(DELEGATE_SOURCE_DIR)/forkpty.patch
 
 #
 # If the compilation of the package requires additional
