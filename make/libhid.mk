@@ -52,7 +52,7 @@ LIBHID_IPK_VERSION=2
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-LIBHID_CPPFLAGS=
+LIBHID_CPPFLAGS=-Wno-unused-but-set-parameter
 LIBHID_LDFLAGS=
 
 ifneq ($(HOSTCC), $(TARGET_CC))
