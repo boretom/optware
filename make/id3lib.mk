@@ -54,7 +54,8 @@ ID3LIB_IPK_VERSION=4
 # ID3LIB_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-ID3LIB_PATCHES=$(ID3LIB_SOURCE_DIR)/wchar.patch
+ID3LIB_PATCHES=$(ID3LIB_SOURCE_DIR)/wchar.patch \
+				$(ID3LIB_SOURCE_DIR)/gcc-4.3.patch
 
 #
 # If the compilation of the package requires additional
