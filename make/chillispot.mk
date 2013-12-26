@@ -51,7 +51,7 @@ CHILLISPOT_CONFFILES=/opt/etc/chilli.conf /opt/etc/init.d/S80chillispot
 # CHILLISPOT_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#CHILLISPOT_PATCHES=
+CHILLISPOT_PATCHES=$(CHILLISPOT_SOURCE_DIR)/gcc-4.3.patch
 
 #
 # If the compilation of the package requires additional
