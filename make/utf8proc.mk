@@ -53,6 +53,9 @@ UTF8PROC_IPK_VERSION=1
 # compilation or linking flags, then list them here.
 #
 UTF8PROC_CPPFLAGS=
+ifeq ($(TARGET_ARCH), x86_64)
+UTF8PROC_CPPFLAGS+= -fPIC
+endif
 UTF8PROC_LDFLAGS=
 
 #
