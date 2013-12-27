@@ -54,7 +54,8 @@ THTTPD_CONFFILES=/opt/etc/init.d/S80thttpd /opt/etc/thttpd.conf
 THTTPD_PATCHES=$(THTTPD_SOURCE_DIR)/Makefile.in.patch \
 		$(THTTPD_SOURCE_DIR)/configure.patch \
 		$(THTTPD_SOURCE_DIR)/config.h.patch \
-		$(THTTPD_SOURCE_DIR)/mime_types.patch 
+		$(THTTPD_SOURCE_DIR)/mime_types.patch \
+		$(THTTPD_SOURCE_DIR)/htpasswd.c.patch \
 
 #
 # If the compilation of the package requires additional
