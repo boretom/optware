@@ -53,6 +53,9 @@ LIBDB52_IPK_VERSION=1
 # compilation or linking flags, then list them here.
 #
 LIBDB52_CPPFLAGS=
+ifeq ($(TARGET_ARCH), x86_64)
+LIBDB52_CPPFLAGS+= -fPIC
+endif
 LIBDB52_LDFLAGS=
 LIBDB52_MUTEX=$(strip \
 	$(if $(filter arm armeb, $(TARGET_ARCH)), --with-mutex=ARM/gcc-assembly, \
