@@ -20,7 +20,7 @@
 # You should change all these variables to suit your package.
 #
 SQUID3_SITE=http://www.squid-cache.org/Versions/v3/3.1
-SQUID3_VERSION=3.1.8
+SQUID3_VERSION=3.1.23
 SQUID3_SOURCE=squid-$(SQUID3_VERSION).tar.bz2
 SQUID3_DIR=squid-$(SQUID3_VERSION)
 SQUID3_UNZIP=bzcat
@@ -51,7 +51,7 @@ SQUID3_PATCHES=$(SQUID3_SOURCE_DIR)/squidv3-build-cf_gen.patch \
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-SQUID3_CPPFLAGS=
+SQUID3_CPPFLAGS=-Wno-unused-but-set-variable
 SQUID3_LDFLAGS=
 SQUID3_EPOLL ?= $(strip \
 $(if $(filter syno-e500, $(OPTWARE_TARGET)),--disable-epoll, \
