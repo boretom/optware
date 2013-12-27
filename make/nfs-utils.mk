@@ -15,10 +15,10 @@
 # You should change all these variables to suit your package.
 #
 NFS-UTILS_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/nfs
-NFS-UTILS_VERSION=1.1.1
-NFS-UTILS_SOURCE=nfs-utils-$(NFS-UTILS_VERSION).tar.gz
+NFS-UTILS_VERSION=1.2.9
+NFS-UTILS_SOURCE=nfs-utils-$(NFS-UTILS_VERSION).tar.bz2
 NFS-UTILS_DIR=nfs-utils-$(NFS-UTILS_VERSION)
-NFS-UTILS_UNZIP=zcat
+NFS-UTILS_UNZIP=bzcat
 NFS-UTILS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 NFS-UTILS_DESCRIPTION=Kernel NFS Server
 NFS-UTILS_SECTION=net
@@ -167,8 +167,8 @@ $(NFS-UTILS_IPK): $(NFS-UTILS_BUILD_DIR)/.built
 	install -d $(NFS-UTILS_IPK_DIR)/opt/sbin
 	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/nfsd/nfsd -o $(NFS-UTILS_IPK_DIR)/opt/sbin/nfsd
 	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/mountd/mountd -o $(NFS-UTILS_IPK_DIR)/opt/sbin/mountd
-	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/lockd/lockd -o $(NFS-UTILS_IPK_DIR)/opt/sbin/lockd
-	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/rquotad/rquotad -o $(NFS-UTILS_IPK_DIR)/opt/sbin/rquotad
+	#$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/lockd/lockd -o $(NFS-UTILS_IPK_DIR)/opt/sbin/lockd
+	#$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/rquotad/rquotad -o $(NFS-UTILS_IPK_DIR)/opt/sbin/rquotad
 	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/statd/statd -o $(NFS-UTILS_IPK_DIR)/opt/sbin/statd
 	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/exportfs/exportfs -o $(NFS-UTILS_IPK_DIR)/opt/sbin/exportfs
 	$(STRIP_COMMAND) $(NFS-UTILS_BUILD_DIR)/utils/showmount/showmount -o $(NFS-UTILS_IPK_DIR)/opt/sbin/showmount
