@@ -231,7 +231,7 @@ $(E2FSPROGS_IPK) $(E2FSLIBS_IPK) $(E2FSLIBS-DEV_IPK): $(E2FSPROGS_BUILD_DIR)/.bu
 	install -d $(E2FSPROGS_IPK_DIR)/opt/man/man8
 	install -d $(E2FSPROGS_IPK_DIR)/opt/man/man1
 	DESTDIR=$(E2FSPROGS_IPK_DIR) LDCONFIG=true \
-	$(MAKE) -C $(E2FSPROGS_BUILD_DIR) install-strip
+	$(MAKE) -C $(E2FSPROGS_BUILD_DIR) install
 	# Strip in the 3 executables - take both e2fsck versions for now
 	$(STRIP_COMMAND) $(E2FSPROGS_BUILD_DIR)/debugfs/debugfs -o $(E2FSPROGS_IPK_DIR)/opt/sbin/debugfs
 	-$(STRIP_COMMAND) $(E2FSPROGS_BUILD_DIR)/e2fsck/e2fsck.shared -o $(E2FSPROGS_IPK_DIR)/opt/sbin/e2fsck
