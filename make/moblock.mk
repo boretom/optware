@@ -52,7 +52,7 @@ MOBLOCK_PATCHES=$(MOBLOCK_SOURCE_DIR)/Makefile.patch
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-MOBLOCK_CPPFLAGS=
+MOBLOCK_CPPFLAGS=-Wno-unused-but-set-variable
 MOBLOCK_LDFLAGS=
 
 #
