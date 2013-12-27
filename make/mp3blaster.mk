@@ -22,7 +22,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 MP3BLASTER_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/mp3blaster
-MP3BLASTER_VERSION=3.2.3
+MP3BLASTER_VERSION=3.2.5
 MP3BLASTER_SOURCE=mp3blaster-$(MP3BLASTER_VERSION).tar.gz
 MP3BLASTER_DIR=mp3blaster-$(MP3BLASTER_VERSION)
 MP3BLASTER_UNZIP=zcat
