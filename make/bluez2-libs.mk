@@ -47,7 +47,7 @@ BLUEZ2-LIBS_IPK_VERSION=1
 # BLUEZ2-LIBS_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#BLUEZ2-LIBS_PATCHES=$(BLUEZ2-LIBS_SOURCE_DIR)/configure.patch
+BLUEZ2-LIBS_PATCHES=$(BLUEZ2-LIBS_SOURCE_DIR)/missing-limits.h.patch
 
 #
 # If the compilation of the package requires additional
@@ -104,7 +104,7 @@ $(BLUEZ2-LIBS_BUILD_DIR)/.configured: $(DL_DIR)/$(BLUEZ2-LIBS_SOURCE) $(BLUEZ2-L
 	#$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(BLUEZ2-LIBS_DIR) $(@D)
 	$(BLUEZ2-LIBS_UNZIP) $(DL_DIR)/$(BLUEZ2-LIBS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	#cat $(BLUEZ2-LIBS_PATCHES) | patch -d $(BUILD_DIR)/$(BLUEZ2-LIBS_DIR) -p1
+	cat $(BLUEZ2-LIBS_PATCHES) | patch -d $(BUILD_DIR)/$(BLUEZ2-LIBS_DIR) -p0
 	mv $(BUILD_DIR)/$(BLUEZ2-LIBS_DIR) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \

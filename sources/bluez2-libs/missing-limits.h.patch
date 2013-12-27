@@ -1,0 +1,10 @@
+--- src/sdp.c.orig	2013-12-24 22:50:58.750952724 +0100
++++ src/sdp.c	2013-12-24 22:49:12.282952724 +0100
+@@ -30,6 +30,7 @@
+ 
+ #include <stdio.h>
+ #include <errno.h>
++#include <limits.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <malloc.h>

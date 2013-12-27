@@ -1,0 +1,40 @@
+--- tools/hciattach.c.orig	2013-12-24 23:51:05.246953298 +0100
++++ tools/hciattach.c	2013-12-24 23:52:29.910952725 +0100
+@@ -35,6 +35,7 @@
+ #include <string.h>
+ #include <signal.h>
+ #include <syslog.h>
++#include <limits.h>
+ #include <termios.h>
+ #include <time.h>
+ #include <sys/time.h>
+--- tools/hciconfig.c.orig	2013-12-24 23:50:49.862952904 +0100
++++ tools/hciconfig.c	2013-12-24 23:52:42.166952581 +0100
+@@ -33,6 +33,7 @@
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <limits.h>
+ #include <getopt.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+--- sdpd/request.c.orig	2013-12-24 23:50:39.838952562 +0100
++++ sdpd/request.c	2013-12-24 23:52:55.094952730 +0100
+@@ -32,6 +32,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <syslog.h>
++#include <limits.h>
+ #include <sys/socket.h>
+ 
+ #include <bluetooth/bluetooth.h>
+--- hidd/sdp.c.orig	2013-12-24 23:50:23.926953199 +0100
++++ hidd/sdp.c	2013-12-24 23:53:06.550952714 +0100
+@@ -32,6 +32,7 @@
+ #include <stdlib.h>
+ #include <malloc.h>
+ #include <string.h>
++#include <limits.h>
+ #include <sys/stat.h>
+ #include <sys/socket.h>
+ 

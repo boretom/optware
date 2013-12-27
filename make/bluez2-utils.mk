@@ -53,8 +53,8 @@ BLUEZ2-UTILS_CONFFILES=\
 # BLUEZ2-UTILS_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-BLUEZ2-UTILS_PATCHES=$(BLUEZ2-UTILS_SOURCE_DIR)/hcid.h.patch
-
+BLUEZ2-UTILS_PATCHES=$(BLUEZ2-UTILS_SOURCE_DIR)/hcid.h.patch \
+			$(BLUEZ2-UTILS_SOURCE_DIR)/missing-limits.h.patch
 #
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
