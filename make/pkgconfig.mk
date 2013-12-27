@@ -140,7 +140,8 @@ $(PKGCONFIG_BUILD_DIR)/.configured: $(DL_DIR)/$(PKGCONFIG_SOURCE) $(PKGCONFIG_PA
 	$(PKGCONFIG_UNZIP) $(DL_DIR)/$(PKGCONFIG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(PKGCONFIG_PATCHES) | patch -d $(BUILD_DIR)/$(PKGCONFIG_DIR) -p1
 	mv $(BUILD_DIR)/$(PKGCONFIG_DIR) $(@D)
-	autoreconf -I. -vif $(@D)/glib-1.2.8
+	#autoreconf -I. -vif $(@D)/glib-1.2.8
+	cd $(@D) && autoconf2.13
 ifneq ($(HOSTCC), $(TARGET_CC))
 	cp $(PKGCONFIG_SOURCE_DIR)/pkgconfig.cache $(PKGCONFIG_BUILD_DIR)/crossconfig.cache
 endif
