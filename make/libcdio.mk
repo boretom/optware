@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 LIBCDIO_SITE=http://ftp.gnu.org/gnu/libcdio
-LIBCDIO_VERSION=0.78.2
+LIBCDIO_VERSION=0.82
 LIBCDIO_SOURCE=libcdio-$(LIBCDIO_VERSION).tar.gz
 LIBCDIO_DIR=libcdio-$(LIBCDIO_VERSION)
 LIBCDIO_UNZIP=zcat
@@ -47,7 +47,7 @@ LIBCDIO_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 ifneq ($(HOSTCC), $(TARGET_CC))
-LIBCDIO_PATCHES=$(LIBCDIO_SOURCE_DIR)/configure.ac.patch
+#LIBCDIO_PATCHES=$(LIBCDIO_SOURCE_DIR)/configure.ac.patch
 endif
 
 #
