@@ -20,11 +20,12 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-MPC_SITE=http://downloads.sourceforge.net/musicpd
+MPC_SITE=http://www.musicpd.org/download/mpc/0
+#MPC_SITE=http://downloads.sourceforge.net/musicpd
 MPC_VERSION=0.19
-MPC_SOURCE=mpc-$(MPC_VERSION).tar.bz2
+MPC_SOURCE=mpc-$(MPC_VERSION).tar.gz
 MPC_DIR=mpc-$(MPC_VERSION)
-MPC_UNZIP=bzcat
+MPC_UNZIP=zcat
 MPC_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 MPC_DESCRIPTION=A command line tool to interface MPD.
 MPC_SECTION=audio
