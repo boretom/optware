@@ -437,7 +437,7 @@ endif
 ifeq (glibc, $(LIBC_STYLE))
 	sed -i -e 's|/usr/local /usr|$(shell cd $(TARGET_INCDIR)/..; pwd)|' $(@D)/ext/iconv/config.m4
 endif
-	autoreconf -vif $(@D)
+	cd $(@D) && autoconf2.13
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(PHP_CPPFLAGS)" \
