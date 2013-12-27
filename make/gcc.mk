@@ -71,7 +71,7 @@ GCC_BUILD_EXTRA_ENV ?=
 # compilation or linking flags, then list them here.
 #
 GCC_CPPFLAGS=
-GCC_LDFLAGS=
+GCC_LDFLAGS=-L$(STAGING_LIB_DIR)
 
 GCC_IPK_DIR=$(BUILD_DIR)/gcc-$(GCC_VERSION)-ipk
 GCC_IPK=$(BUILD_DIR)/gcc_$(GCC_VERSION)-$(GCC_IPK_VERSION)_$(TARGET_ARCH).ipk
@@ -108,10 +108,13 @@ gcc-source: $(DL_DIR)/$(GCC_SOURCE) $(GCC_PATCHES)
 
 
 $(GCC_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GCC_SOURCE) make/gcc.mk
+	$(MAKE) libgmp-stage libmpfr-stage libmpc-stage
 	rm -rf $(HOST_BUILD_DIR)/$(GCC_DIR) $(@D)
 	$(GCC_UNZIP) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
 	mv $(HOST_BUILD_DIR)/$(GCC_DIR) $(@D)
 	(cd $(@D); \
+		CPPFLAGS="$(GCC_CPPFLAGS)" \
+		LDFLAGS="$(GCC_LDFLAGS)" \
 		./configure \
 		--prefix=$(HOST_STAGING_PREFIX)	\
 		--program-suffix="-$(GCC_HOST_PROGRAM_SUFFIX)" \
@@ -166,6 +169,9 @@ $(GCC_BUILD_DIR)/.configured: $(DL_DIR)/$(GCC_SOURCE) $(GCC_PATCHES) #make/gcc.m
 		--host=$(GCC_TARGET_NAME) \
 		--target=$(GCC_TARGET_NAME) \
 		--prefix=/opt \
+		--with-gmp=$(STAGING_DIR)/opt \
+		--with-mpfr=$(STAGING_DIR)/opt \
+		--with-mpc=$(STAGING_DIR)/opt \
 		--disable-nls \
 		--disable-static \
 		--with-as=$(TARGET_AS) \
