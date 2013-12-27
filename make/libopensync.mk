@@ -55,7 +55,7 @@ LIBOPENSYNC_IPK_VERSION=1
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-LIBOPENSYNC_CPPFLAGS=
+LIBOPENSYNC_CPPFLAGS=-Wno-unused-but-set-variable
 LIBOPENSYNC_LDFLAGS=
 
 #
