@@ -1,0 +1,10 @@
+--- libdvb/sample_progs/cam_menu.hh.orig	2013-12-26 11:48:50.311913865 +0100
++++ libdvb/sample_progs/cam_menu.hh	2013-12-26 11:49:09.127913005 +0100
+@@ -4,6 +4,7 @@
+  */
+ #include <sys/types.h>
+ #include <sys/socket.h>
++#include <string.h>
+ 
+ #ifndef __CAM_MENU_HH
+ #define __CAM_MENU_HH

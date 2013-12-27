@@ -56,7 +56,8 @@ LIBDVB_CONFFILES=
 # LIBDVB_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-LIBDVB_PATCHES=$(LIBDVB_SOURCE_DIR)/topf2ps.patch
+LIBDVB_PATCHES=$(LIBDVB_SOURCE_DIR)/topf2ps.patch \
+			$(LIBDVB_SOURCE_DIR)/cam_menu.hh.patch
 
 #
 # If the compilation of the package requires additional
