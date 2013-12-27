@@ -33,6 +33,7 @@ SCPONLY_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 # SCPONLY_PATCHES=$(SCPONLY_SOURCE_DIR)/configure.patch
+SCPONLY_PATCHES=$(SCPONLY_SOURCE_DIR)/helper.c.patch
 
 #
 # If the compilation of the package requires additional

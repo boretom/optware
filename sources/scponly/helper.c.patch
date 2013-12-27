@@ -1,0 +1,11 @@
+--- helper.c.orig	2013-12-27 19:27:36.005542701 +0100
++++ helper.c	2013-12-27 19:23:31.061542701 +0100
+@@ -230,7 +230,7 @@
+ 						return 1;
+ 					}
+ 				}
+-#elif
++#else
+ 				/*
+ 				 * make sure that processing doesn't continue if we can't validate a rsync check
+ 				 * and if the getopt flag is set.
