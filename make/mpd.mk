@@ -20,14 +20,18 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+MPD_SITE=http://www.musicpd.org/download/mpd/$(MPD_MAJOR_VERSION).$(MPD_MINOR_VERSION)
 #MPD_SITE=http://www.musicpd.org/uploads/files
-MPD_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/musicpd
+#MPD_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/musicpd
 #MPD_SVN_REPO=https://svn.musicpd.org/mpd/trunk
 #MPD_SVN_REV=5324
-MPD_VERSION=0.15.15
-MPD_SOURCE=mpd-$(MPD_VERSION).tar.bz2
+MPD_MAJOR_VERSION=0
+MPD_MINOR_VERSION=17
+MPD_REVISION=6
+MPD_VERSION=$(MPD_MAJOR_VERSION).$(MPD_MINOR_VERSION).$(MPD_REVISION)
+MPD_SOURCE=mpd-$(MPD_VERSION).tar.gz
 MPD_DIR=mpd-$(MPD_VERSION)
-MPD_UNZIP=bzcat
+MPD_UNZIP=zcat
 MPD_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 MPD_DESCRIPTION=Music Player Daemon (MPD) allows remote access for playing music.
 MPD_SECTION=audio
@@ -60,6 +64,7 @@ MPD_IPK_VERSION=2
 # which they should be applied to the source code.
 #
 # MPD_PATCHES=$(MPD_SOURCE_DIR)/flac-1.1.3.patch
+MPD_PATCHES=$(MPD_SOURCE_DIR)/ffmpeg-2.patch
 
 #
 # If the compilation of the package requires additional
@@ -172,7 +177,7 @@ endif
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MPD_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MPD_LDFLAGS)" \
-		PKG_CONFIG_LIBDIR=$(STAGING_LIB_DIR)/pkgconfig \
+		PKG_CONFIG_PATH=$(STAGING_LIB_DIR)/pkgconfig \
 		SHOUT_LIBS="-lshout -lspeex" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \

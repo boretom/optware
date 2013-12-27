@@ -1,0 +1,26 @@
+diff -Naur mpd-0.17.5.orig/src/decoder/ffmpeg_decoder_plugin.c mpd-0.17.5/src/decoder/ffmpeg_decoder_plugin.c
+--- src/decoder/ffmpeg_decoder_plugin.c	2013-08-04 19:20:16.000000000 +0700
++++ src/decoder/ffmpeg_decoder_plugin.c	2013-09-28 13:25:06.000000000 +0700
+@@ -47,6 +47,8 @@
+ #undef G_LOG_DOMAIN
+ #define G_LOG_DOMAIN "ffmpeg"
+
++#define MAX_AUDIO_FRAME_SIZE 192000
++
+ static GLogLevelFlags
+ level_ffmpeg_to_glib(int level)
+ {
+@@ -299,11 +301,11 @@
+ #endif
+
+ #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53,25,0)
+-	uint8_t aligned_buffer[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
++	uint8_t aligned_buffer[(MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
+ 	const size_t buffer_size = sizeof(aligned_buffer);
+ #else
+ 	/* libavcodec < 0.8 needs an aligned buffer */
+-	uint8_t audio_buf[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
++	uint8_t audio_buf[(MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
+ 	size_t buffer_size = sizeof(audio_buf);
+ 	int16_t *aligned_buffer = align16(audio_buf, &buffer_size);
+ #endif
