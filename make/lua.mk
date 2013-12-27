@@ -60,6 +60,9 @@ LUA_PATCHES=$(LUA_SOURCE_DIR)/makefiles.patch
 # compilation or linking flags, then list them here.
 #
 LUA_CPPFLAGS=-DLUA_USE_LINUX
+ifeq ($(TARGET_ARCH), x86_64)
+LUA_CPPFLAGS+= -fPIC
+endif
 LUA_LDFLAGS=
 
 #
