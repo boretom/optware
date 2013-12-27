@@ -1,0 +1,10 @@
+--- mediatomb/src/zmm/object.h.orig	2013-12-26 12:42:45.687913013 +0100
++++ mediatomb/src/zmm/object.h	2013-12-26 12:43:01.591913766 +0100
+@@ -33,6 +33,7 @@
+ #define __ZMM_OBJECT_H__
+ 
+ #include <new> // for size_t
++#include <stdlib.h>
+ #include "atomic.h"
+ 
+ namespace zmm
