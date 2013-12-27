@@ -53,6 +53,9 @@ LIBA52_IPK_VERSION=1
 # compilation or linking flags, then list them here.
 #
 LIBA52_CPPFLAGS=
+ifeq ($(TARGET_ARCH), x86_64)
+LIBA52_CPPFLAGS+= -fPIC
+endif
 LIBA52_LDFLAGS=
 
 #
