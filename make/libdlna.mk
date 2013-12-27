@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 LIBDLNA_SITE=http://libdlna.geexbox.org/releases
-LIBDLNA_VERSION=0.2.3
+LIBDLNA_VERSION=0.2.4
 LIBDLNA_SOURCE=libdlna-$(LIBDLNA_VERSION).tar.bz2
 LIBDLNA_DIR=libdlna-$(LIBDLNA_VERSION)
 LIBDLNA_UNZIP=bzcat
@@ -126,6 +126,7 @@ $(LIBDLNA_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBDLNA_SOURCE) $(LIBDLNA_PATCHES)
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBDLNA_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBDLNA_LDFLAGS)" \
+		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
 		./configure \
 		--cross-compile \
 		--prefix=/opt \
