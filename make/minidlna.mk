@@ -126,6 +126,7 @@ endif
 	if test "$(BUILD_DIR)/$(MINIDLNA_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(MINIDLNA_DIR) $(@D) ; \
 	fi
+	cd $(@D) && autoconf
 	sed -i.orig \
 		-e 's|-I/usr/include|-I$(STAGING_INCLUDE_DIR)|g' \
 		-e '/$$(CFLAGS).*-c/s|$$(CFLAGS) |&$$(CPPFLAGS) |' \
@@ -146,7 +147,7 @@ endif
 		 -e 's|/etc/|/opt&|' \
 		 -e 's|/usr/|/opt/|' \
 		$(@D)/minidlna.c
-#	(cd $(@D); \
+	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MINIDLNA_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MINIDLNA_LDFLAGS)" \
