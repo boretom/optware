@@ -18,6 +18,7 @@
 DOVECOT_SITE=http://dovecot.org/releases/1.2/beta
 DOVECOT_VERSION=1.2.0.beta1
 DOVECOT_SRC_VERSION=1.2.beta1
+#DOVECOT_SRC_VERSION=1.2.13
 #
 # Version 1.2.0 should be greater then 1.2.beta1 so i place
 # a extra "0" in the ipk version.
@@ -56,7 +57,8 @@ DOVECOT_CONFFILES= \
 # DOVECOT_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-DOVECOT_PATCHES=$(DOVECOT_SOURCE_DIR)/configure.in.patch
+DOVECOT_PATCHES=$(DOVECOT_SOURCE_DIR)/configure.in.patch \
+			$(DOVECOT_SOURCE_DIR)/Makefile.am.patch
 
 #
 # If the compilation of the package requires additional

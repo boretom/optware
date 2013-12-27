@@ -1,0 +1,11 @@
+--- Makefile.am.orig	2013-12-25 10:29:00.474794000 +0100
++++ Makefile.am	2013-12-25 10:25:36.010794000 +0100
+@@ -20,7 +20,7 @@
+ 
+ if INSTALL_HEADERS
+   nodist_pkginclude_HEADERS = config.h
+-  pkglib_DATA = $(datafiles)
++  pkgdata_DATA = $(datafiles)
+ else
+   noinst_DATA = $(datafiles)
+ endif
