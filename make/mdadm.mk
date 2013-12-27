@@ -47,7 +47,7 @@ MDADM_PATCHES=
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-MDADM_CPPFLAGS=
+MDADM_CPPFLAGS=-Wno-unused-but-set-variable
 MDADM_LDFLAGS=
 
 #
@@ -109,7 +109,7 @@ mdadm-unpack: $(MDADM_BUILD_DIR)/.configured
 # directly to the main binary which is built.
 #
 $(MDADM_BUILD_DIR)/mdadm: $(MDADM_BUILD_DIR)/.configured
-	$(MAKE) -C $(MDADM_BUILD_DIR) CC=$(TARGET_CC) DESTDIR="$(MDADM_BUILD_DIR)/opt/"
+	$(MAKE) -C $(MDADM_BUILD_DIR) CPPFLAGS=$(MDADM_CPPFLAGS) CC=$(TARGET_CC) DESTDIR="$(MDADM_BUILD_DIR)/opt/"
 
 #
 # You should change the dependency to refer directly to the main binary
