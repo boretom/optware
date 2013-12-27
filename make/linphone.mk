@@ -57,7 +57,7 @@ endif
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-LINPHONE_CPPFLAGS=
+LINPHONE_CPPFLAGS=-Wno-unused-but-set-variable
 LINPHONE_LDFLAGS ?=
 ifeq (uclibc, $(LIBC_STYLE))
 LINPHONE_LDFLAGS += -lpthread
