@@ -46,7 +46,10 @@ PROCMAIL_IPK_VERSION=4
 # PROCMAIL_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-PROCMAIL_PATCHES=$(PROCMAIL_SOURCE_DIR)/src-Makefile.0.patch $(PROCMAIL_SOURCE_DIR)/src-autoconf.patch $(PROCMAIL_SOURCE_DIR)/config.patch
+PROCMAIL_PATCHES=$(PROCMAIL_SOURCE_DIR)/src-Makefile.0.patch \
+			$(PROCMAIL_SOURCE_DIR)/src-autoconf.patch \
+			$(PROCMAIL_SOURCE_DIR)/config.patch \
+			$(PROCMAIL_SOURCE_DIR)/prev-decl-of-getline.patch
 ifeq ($(OPTWARE_TARGET),fsg3)
 PROCMAIL_PATCHES+= $(PROCMAIL_SOURCE_DIR)/config-fsg3.patch
 endif
@@ -210,3 +213,8 @@ procmail-clean:
 #
 procmail-dirclean:
 	rm -rf $(BUILD_DIR)/$(PROCMAIL_DIR) $(PROCMAIL_BUILD_DIR) $(PROCMAIL_IPK_DIR) $(PROCMAIL_IPK)
+#
+# Some sanity check for the package.
+#
+procmail-check: $(PROCMAIL_IPK)
+	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
