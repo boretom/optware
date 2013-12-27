@@ -24,6 +24,11 @@ KNOCK_IPK_VERSION=5
 # KNOCK_CONFFILES should be a list of user-editable files
 KNOCK_CONFFILES=/opt/etc/knockd.conf /opt/etc/init.d/S05knockd
 
+#
+# KNOCK_PATCHES should list any patches, in the the order in
+# which they should be applied to the source code.
+#
+KNOCK_PATCHES=$(KNOCK_SOURCE_DIR)/missing-limits.h.patch
 
 #
 # If the compilation of the package requires additional
@@ -85,6 +90,10 @@ $(KNOCK_BUILD_DIR)/.configured: $(DL_DIR)/$(KNOCK_SOURCE) make/knock.mk
 	$(MAKE) libpcap-stage
 	rm -rf $(BUILD_DIR)/$(KNOCK_DIR) $(@D)
 	$(KNOCK_UNZIP) $(DL_DIR)/$(KNOCK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	if test -n "$(KNOCK_PATCHES)" ; \
+		then cat $(KNOCK_PATCHES) | \
+		patch -d $(BUILD_DIR)/$(KNOCK_DIR) -p0 ; \
+	fi
 	if test "$(BUILD_DIR)/$(KNOCK_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(KNOCK_DIR) $(@D) ; \
 	fi

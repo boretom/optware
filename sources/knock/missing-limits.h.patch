@@ -1,0 +1,10 @@
+--- src/knockd.c.orig	2013-12-26 11:17:32.287913414 +0100
++++ src/knockd.c	2013-12-26 11:16:44.599912952 +0100
+@@ -46,6 +46,7 @@
+ #include <syslog.h>
+ #include <pcap.h>
+ #include <errno.h>
++#include <limits.h>
+ #include "list.h"
+ 
+ static char version[] = "0.5";
