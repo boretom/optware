@@ -1,18 +1,18 @@
---- server/Makefile.in.orig	2007-06-13 13:15:49.000000000 -0700
-+++ server/Makefile.in	2007-06-13 13:19:56.000000000 -0700
-@@ -576,13 +576,13 @@
- AM_CPPFLAGS = -Wall -g -I$(top_srcdir) -I$(top_srcdir)/server -I$(srcdir)/drivers/shell
- @INCLUDE_RTKGUI_FALSE@RTKGUI_LIBS = 
- @INCLUDE_RTKGUI_TRUE@RTKGUI_LIBS = -L$(top_builddir)/rtk2 -lrtk @GTK_LIBS@
--player_DEPENDENCIES = $(top_builddir)/server/libplayerdrivers/libplayerdrivers.la $(top_builddir)/libplayercore/libplayercore.la $(top_builddir)/libplayercore/libplayererror.la $(top_builddir)/libplayertcp/libplayertcp.la $(top_builddir)/libplayerxdr/libplayerxdr.la
-+player_DEPENDENCIES = $(top_builddir)/server/libplayerdrivers/libplayerdrivers.la $(top_builddir)/libplayercore/libplayercore.la $(top_builddir)/libplayercore/libplayererror.la $(top_builddir)/libplayertcp/libplayertcp.la $(top_builddir)/libplayerxdr/libplayerxdr.la $(top_builddir)/libplayerjpeg/libplayerjpeg.la
+--- server/Makefile.in.orig	2009-07-27 13:28:29.000000000 +0200
++++ server/Makefile.in	2013-12-27 16:12:10.581542700 +0100
+@@ -485,6 +485,7 @@
+ 	$(top_builddir)/libplayercore/libplayerutils.la \
+ 	$(top_builddir)/libplayertcp/libplayertcp.la \
+ 	$(top_builddir)/libplayertcp/libplayerudp.la \
++	$(top_builddir)/libplayerjpeg/libplayerjpeg.la \
+ 	$(top_builddir)/libplayerxdr/libplayerxdr.la $(am__append_1)
  
  # Note to everybody: please do NOT break the following assignment onto
- # separate lines with backslashes.  It makes the link line look like shit and 
- # hard to parse.  - BPG
- #
--player_LDADD = -lm $(top_builddir)/server/libplayerdrivers/libplayerdrivers.la $(top_builddir)/libplayercore/libplayercore.la $(top_builddir)/libplayercore/libplayererror.la $(top_builddir)/libplayertcp/libplayertcp.la $(top_builddir)/libplayerxdr/libplayerxdr.la @PLAYER_DRIVER_EXTRA_LIBS@ $(RTKGUI_LIBS) $(top_builddir)/replace/libreplace.la
-+player_LDADD = -lm $(top_builddir)/server/libplayerdrivers/libplayerdrivers.la $(top_builddir)/libplayercore/libplayercore.la $(top_builddir)/libplayercore/libplayererror.la $(top_builddir)/libplayertcp/libplayertcp.la $(top_builddir)/libplayerxdr/libplayerxdr.la @PLAYER_DRIVER_EXTRA_LIBS@ $(RTKGUI_LIBS) $(top_builddir)/replace/libreplace.la $(top_builddir)/libplayerjpeg/libplayerjpeg.la
- #player_LDADD   = -lm $(top_builddir)/server/libplayerdrivers/.libs/libplayerdrivers.a $(top_builddir)/libplayercore/.libs/libplayercore.a $(top_builddir)/libplayercore/.libs/libplayererror.a $(top_builddir)/libplayertcp/.libs/libplayertcp.a $(top_builddir)/libplayerxdr/.libs/libplayerxdr.a @PLAYER_DRIVER_EXTRA_LIBS@ $(RTKGUI_LIBS) $(top_builddir)/replace/.libs/libreplace.a
- player_LDFLAGS = -export-dynamic
- player_SOURCES = server.cc
+@@ -498,6 +499,7 @@
+ 	$(top_builddir)/libplayercore/libplayerutils.la \
+ 	$(top_builddir)/libplayertcp/libplayertcp.la \
+ 	$(top_builddir)/libplayertcp/libplayerudp.la \
++	$(top_builddir)/libplayerjpeg/libplayerjpeg.la \
+ 	$(top_builddir)/libplayerxdr/libplayerxdr.la \
+ 	@PLAYER_DRIVER_EXTRA_LIBS@ $(RTKGUI_LIBS) \
+ 	$(top_builddir)/replace/libreplace.la @ARTOOLKITPLUS_LIBS@ \

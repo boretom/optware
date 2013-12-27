@@ -21,10 +21,10 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 PLAYER_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/playerstage
-PLAYER_VERSION=2.0.5
-PLAYER_SOURCE=player-$(PLAYER_VERSION).tar.bz2
+PLAYER_VERSION=2.1.3
+PLAYER_SOURCE=player-$(PLAYER_VERSION).tar.gz
 PLAYER_DIR=player-$(PLAYER_VERSION)
-PLAYER_UNZIP=bzcat
+PLAYER_UNZIP=zcat
 PLAYER_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 PLAYER_DESCRIPTION=Player provides a network interface to a variety of robot and sensor hardware. \
 Player''s client/server model allows robot control programs to be written in any programming language and to run on any computer with a network connection to the robot. Player supports multiple concurrent client connections to devices, creating new possibilities for distributed and collaborative sensing and control.
@@ -48,7 +48,7 @@ PLAYER_IPK_VERSION=3
 # which they should be applied to the source code.
 #
 PLAYER_PATCHES=$(PLAYER_SOURCE_DIR)/server-Makefile.in.patch
-PLAYER_PATCHES+=$(PLAYER_SOURCE_DIR)/uint.patch
+#PLAYER_PATCHES+=$(PLAYER_SOURCE_DIR)/uint.patch
 
 #
 # If the compilation of the package requires additional
