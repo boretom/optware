@@ -1,6 +1,6 @@
 Optware Software Packaging
 ==========================
-This Optware fork adds support for the ASUSTOR NAS and it's based on the [original subversion repository](http://svn.nslu2-linux.org/svnroot/optware/trunk), revision 13108.
+This Optware fork adds support for the ASUSTOR NAS and it's based on the [original subversion repository](http://svn.nslu2-linux.org/svnroot/optware/trunk), revision 13119.
 
 What ASUSTOR targets are supported
 ----------------------------------
