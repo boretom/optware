@@ -269,9 +269,9 @@ $(KAMAILIO_IPK): $(KAMAILIO_BUILD_DIR)/.built
 	$(MAKE) $(KAMAILIO_IPK_DIR)/CONTROL/control
 	echo $(KAMAILIO_CONFFILES) | sed -e 's/ /\n/g' > $(KAMAILIO_IPK_DIR)/CONTROL/conffiles
 
-	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib/kamailio/modules -name '*.so'`; do $(STRIP_COMMAND) $$f; done
-	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib/kamailio/modules_k -name '*.so'`; do $(STRIP_COMMAND) $$f; done
-	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib/kamailio -name '*.so'`; do $(STRIP_COMMAND) $$f; done
+	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/modules -name '*.so'`; do $(STRIP_COMMAND) $$f; done
+	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/modules_k -name '*.so'`; do $(STRIP_COMMAND) $$f; done
+	for f in `find $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio -name '*.so'`; do $(STRIP_COMMAND) $$f; done
 	$(STRIP_COMMAND) $(KAMAILIO_IPK_DIR)/opt/sbin/kamailio
 	$(STRIP_COMMAND) $(KAMAILIO_IPK_DIR)/opt/sbin/kamcmd
 
@@ -284,7 +284,7 @@ $(KAMAILIO_IPK): $(KAMAILIO_BUILD_DIR)/.built
 	sed -i -e 's#$(KAMAILIO_IPK_DIR)##g' $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/kamctl/kamctl.base
 	sed -i -e 's#PATH=$$PATH:/opt/sbin/#PATH=$$PATH:/opt/sbin/:/opt/bin/#' $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/kamctl/kamctl.base
 
-	sed -i -e 's#$(KAMAILIO_IPK_DIR)##g' $(KAMAILIO_IPK_DIR)/opt/lib/kamailio/kamctl/kamdbctl.base
+	sed -i -e 's#$(KAMAILIO_IPK_DIR)##g' $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/kamctl/kamdbctl.base
 	sed -i -e 's#PATH=$$PATH:/opt/sbin/#PATH=$$PATH:/opt/sbin/:/opt/bin/#' $(KAMAILIO_IPK_DIR)/opt/lib*/kamailio/kamctl/kamdbctl.base
 
 	############################
