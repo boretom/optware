@@ -4,12 +4,12 @@ PACKAGES_BROKEN_ON_64BIT_HOST = \
 
 SPECIFIC_PACKAGES = \
 	optware-bootstrap kernel-modules \
+	binutils gcc libc-dev \
 
 #	$(PACKAGES_REQUIRE_LINUX26) \
 #	py-ctypes \
 #	redis \
 #	$(PERL_PACKAGES) \
-#	binutils gcc libc-dev \
 
 # appweb* : download "file not found"
 # calc : not defined some standard functions
