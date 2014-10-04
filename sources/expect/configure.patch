@@ -1,0 +1,41 @@
+--- configure.orig	2014-07-27 10:34:37.942925359 +0200
++++ configure	2014-07-27 10:39:27.678925302 +0200
+@@ -14261,12 +14261,6 @@
+ # seen this is ISC.
+ echo "$as_me:$LINENO: checking if WNOHANG requires _POSIX_SOURCE" >&5
+ echo $ECHO_N "checking if WNOHANG requires _POSIX_SOURCE... $ECHO_C" >&6
+-if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: Expect can't be cross compiled" >&5
+-echo "$as_me: error: Expect can't be cross compiled" >&2;}
+-   { (exit 1); exit 1; }; }
+-
+-else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -14312,17 +14306,10 @@
+ 
+ fi
+ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+ 
+ echo "$as_me:$LINENO: checking if any value exists for WNOHANG" >&5
+ echo $ECHO_N "checking if any value exists for WNOHANG... $ECHO_C" >&6
+ rm -rf wnohang
+-if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: Expect can't be cross compiled" >&5
+-echo "$as_me: error: Expect can't be cross compiled" >&2;}
+-   { (exit 1); exit 1; }; }
+-
+-else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+@@ -14377,7 +14364,6 @@
+ 
+ fi
+ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+ 
+ #
+ # check how signals work
