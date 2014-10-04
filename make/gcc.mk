@@ -40,6 +40,13 @@ GCC_DESCRIPTION=The GNU Compiler Collection.
 GCC_SECTION=base
 GCC_PRIORITY=optional
 GCC_DEPENDS=binutils, libc-dev
+# check if GCC version >= 4.6 -> new deps (starting from which gcc version?)
+GCCVERSIONGT46 := $(shell echo "`echo $(GCC_VERSION) | cut -b 1-3` >= 4.6" | bc )
+ifeq "$(GCCVERSIONGT46)" "1"
+GCC_DEPENDS+=libgmp, libmpfr, libmpc
+endif
+
+
 GCC_SUGGESTS=
 GCC_CONFLICTS=
 
