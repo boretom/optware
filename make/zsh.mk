@@ -36,7 +36,7 @@ ZSH_CONFLICTS=
 #
 # ZSH_IPK_VERSION should be incremented when the ipk changes.
 #
-ZSH_IPK_VERSION=1
+ZSH_IPK_VERSION=2
 
 #
 # ZSH_CONFFILES should be a list of user-editable files
@@ -125,6 +125,7 @@ $(ZSH_BUILD_DIR)/.configured: $(DL_DIR)/$(ZSH_SOURCE) $(ZSH_PATCHES) make/zsh.mk
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
+		--enable-etcdir=/opt/etc/zsh \
 		--prefix=/opt \
 		--disable-nls \
 		--disable-static \
