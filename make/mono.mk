@@ -20,8 +20,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-MONO_SITE=http://ftp.novell.com/pub/mono/sources/mono
-MONO_VERSION=2.4
+MONO_SITE=http://download.mono-project.com/sources/mono
+MONO_VERSION=3.10.0
 MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
 MONO_DIR=mono-$(MONO_VERSION)
 MONO_UNZIP=bzcat
@@ -46,7 +46,7 @@ MONO_IPK_VERSION=1
 # MONO_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-MONO_PATCHES=$(MONO_SOURCE_DIR)/ULLONG_MAX.patch
+# MONO_PATCHES=$(MONO_SOURCE_DIR)/ULLONG_MAX.patch
 
 #
 # If the compilation of the package requires additional
@@ -61,7 +61,8 @@ MONO_LDFLAGS=
 
 ifneq ($(HOSTCC), $(TARGET_CC))
 MONO_CONFIG_ENVS=mono_cv_uscore=no mono_cv_sizeof_sunpath=1024
-MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sigaltstack=no
+#MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sigaltstack=no
+MONO_CONFIG_ARGS=--with-tls=pthread --with-sigaltstack=no --with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
 #		--with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
 endif
 
@@ -101,6 +102,10 @@ $(MONO_HOST_BUILD_DIR)/.built: $(DL_DIR)/$(MONO_SOURCE) # make/mono.mk
 #	$(MAKE) glib-stage
 	rm -rf $(HOST_BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	if test -n "$(MONO_PATCHES)" ; \
+		then cat $(MONO_PATCHES) | \
+		patch -l -d $(HOST_BUILD_DIR)/$(MONO_DIR) -p0 ; \
+	fi
 	if test "$(HOST_BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
 		then mv $(HOST_BUILD_DIR)/$(MONO_DIR) $(@D) ; \
 	fi
@@ -108,7 +113,6 @@ $(MONO_HOST_BUILD_DIR)/.built: $(DL_DIR)/$(MONO_SOURCE) # make/mono.mk
 		./configure \
 		--prefix=/opt \
 		--disable-nls \
-		--disable-static \
 	)
 	$(MAKE) -C $(@D)
 	touch $@
@@ -138,7 +142,7 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 else
 $(MONO_BUILD_DIR)/.configured: $(MONO_HOST_BUILD_DIR)/.built $(MONO_PATCHES) # make/mono.mk
 endif
-	$(MAKE) glib-stage
+#	$(MAKE) glib-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(MONO_PATCHES)" ; \
