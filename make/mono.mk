@@ -62,7 +62,7 @@ MONO_LDFLAGS=
 ifneq ($(HOSTCC), $(TARGET_CC))
 MONO_CONFIG_ENVS=mono_cv_uscore=no mono_cv_sizeof_sunpath=1024
 #MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sigaltstack=no
-MONO_CONFIG_ARGS=--with-tls=pthread --with-sigaltstack=no --with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
+MONO_CONFIG_ARGS=--with-tls=__thread --with-sigaltstack=no --with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
 #		--with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
 endif
 
