@@ -23,7 +23,7 @@
 BASH_SITE=http://ftp.gnu.org/gnu/bash/
 BASH_VER=3.2
 # must match patch files
-BASH_PATCH_LEVEL=49
+BASH_PATCH_LEVEL=56
 BASH_VERSION=$(BASH_VER).$(BASH_PATCH_LEVEL)
 BASH_SOURCE=bash-$(BASH_VER).tar.gz
 BASH_DIR=bash-$(BASH_VER)
@@ -43,7 +43,7 @@ BASH_CONFLICTS=
 #
 # BASH_IPK_VERSION should be incremented when the ipk changes.
 #
-BASH_IPK_VERSION=1
+BASH_IPK_VERSION=2
 #
 # BASH_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.

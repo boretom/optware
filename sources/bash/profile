@@ -2,8 +2,11 @@
 # Bash initialization script
 #
 
-PS1="[\u@\h \W]$ "
-PATH=/opt/sbin:/opt/bin:/sbin:/bin:/usr/sbin:/usr/bin
-LD_LIBRARY_PATH=/opt/lib:${LD_LIBRARY_PATH}
-
-export PS1 PATH LD_LIBRARY_PATH
+if [ -d /opt/etc/profile.d ]; then
+  for i in /opt/etc/profile.d/*.sh; do
+      if [ -r $i ]; then
+          . $i
+      fi
+  done
+  unset i
+fi
