@@ -21,7 +21,11 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 MONO_SITE=http://download.mono-project.com/sources/mono
+ifneq (,$(filter arm armeb armel, $(TARGET_ARCH)))
 MONO_VERSION=3.10.0
+else
+MONO_VERSION=3.10.0
+endif
 MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
 MONO_DIR=mono-$(MONO_VERSION)
 MONO_UNZIP=bzcat
@@ -47,6 +51,11 @@ MONO_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 # MONO_PATCHES=$(MONO_SOURCE_DIR)/ULLONG_MAX.patch
+ifneq (,$(filter arm armeb armel, $(TARGET_ARCH)))
+MONO_PATCHES=$(MONO_SOURCE_DIR)/tsx19-arm.patch
+else
+#MONO_PATCHES=$(MONO_SOURCE_DIR)/missing-targets-file.patch
+endif
 
 #
 # If the compilation of the package requires additional
@@ -55,15 +64,17 @@ MONO_IPK_VERSION=1
 MONO_CPPFLAGS=$(strip \
 $(if $(filter nslu2, $(OPTWARE_TARGET)), -DARM_FPU_FPA, \
 $(if $(filter slugosbe slugosle, $(OPTWARE_TARGET)), -DARM_FPU_FPA, \
-$(if $(filter arm armeb, $(TARGET_ARCH)), -DARM_FPU_VFP, ) \
+$(if $(filter arm armeb, $(TARGET_ARCH)), -DARM_FPU_NONE, ) \
 )))
 MONO_LDFLAGS=
 
 ifneq ($(HOSTCC), $(TARGET_CC))
+ifneq (,$(filter arm armeb armel, $(TARGET_ARCH)))
 MONO_CONFIG_ENVS=mono_cv_uscore=no mono_cv_sizeof_sunpath=1024
-#MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sigaltstack=no
+MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sgen=no --with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
+else
 MONO_CONFIG_ARGS=--with-tls=__thread --with-sigaltstack=no --with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
-#		--with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
+endif
 endif
 
 #
@@ -117,7 +128,14 @@ $(MONO_HOST_BUILD_DIR)/.built: $(DL_DIR)/$(MONO_SOURCE) # make/mono.mk
 	$(MAKE) -C $(@D)
 	touch $@
 
+$(MONO_HOST_BUILD_DIR)/.staged: $(MONO_HOST_BUILD_DIR)/.built
+	rm -f $@
+	$(MAKE) -C $(@D) DESTDIR=$(HOST_STAGING_DIR) install
+	touch $@
+
+
 mono-hostbuild: $(MONO_HOST_BUILD_DIR)/.built
+mono-host-stage: $(MONO_HOST_BUILD_DIR)/.staged
 
 #
 # This target unpacks the source code in the build directory.
@@ -160,7 +178,7 @@ endif
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
-		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig $(HOST_STAGING_LIB_DIR)/pkgconfig" \
 		$(MONO_CONFIG_ENVS) \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
@@ -183,7 +201,22 @@ mono-unpack: $(MONO_BUILD_DIR)/.configured
 # This builds the actual binary.
 #
 $(MONO_BUILD_DIR)/.built: $(MONO_BUILD_DIR)/.configured
-	rm -f $@
+	rm -f $@;
+ifneq (,$(filter arm armeb armel, $(TARGET_ARCH)))
+	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
+        CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
+        LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
+        PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		./libtool --tag=CC --mode=compile $(TARGET_CC) -g -O2 -MT linux-atomic.lo -MD -MP -MF \
+	 		linux-atomic.Tpo -c -o linux-atomic.lo linux-atomic.c; \
+		$(TARGET_CONFIGURE_OPTS) \
+        CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
+        LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
+        PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		./libtool --tag=CC --mode=link $(TARGET_CC) -g -O2 -o liblinux-atomic.la linux-atomic.lo; \
+	)
+endif
 	$(MAKE) -C $(@D)
 	touch $@
 
