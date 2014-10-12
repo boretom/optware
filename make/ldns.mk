@@ -131,6 +131,7 @@ $(LDNS_BUILD_DIR)/.configured: $(DL_DIR)/$(LDNS_SOURCE) $(LDNS_PATCHES) make/ldn
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 		--with-ssl=$(STAGING_PREFIX) \
+		--disable-gost \
 		--disable-nls \
 		--disable-static \
 	)

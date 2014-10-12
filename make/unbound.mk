@@ -136,6 +136,7 @@ $(UNBOUND_BUILD_DIR)/.configured: $(DL_DIR)/$(UNBOUND_SOURCE) $(UNBOUND_PATCHES)
 		--with-ssl=$(STAGING_PREFIX) \
 		--enable-allsymbols \
 		--without-pthreads \
+		--disable-gost \
 		--disable-nls \
 		--disable-static \
 	)
