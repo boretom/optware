@@ -51,7 +51,7 @@ SQLITE_IPK_VERSION=1
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-SQLITE_CPPFLAGS=
+SQLITE_CPPFLAGS=-D SQLITE_ENABLE_COLUMN_METADATA
 SQLITE_LDFLAGS=
 ifeq ($(LIBC_STYLE), uclibc)
 SQLITE_LDFLAGS+=-lm
@@ -120,6 +120,7 @@ $(SQLITE_BUILD_DIR)/.configured: $(DL_DIR)/$(SQLITE_SOURCE) $(SQLITE_PATCHES) ma
 		$(TARGET_CONFIGURE_OPTS) \
 		config_BUILD_CC="$(HOSTCC)" \
 		config_TARGET_CC="$(TARGET_CC)" \
+		CPPFLAGS="$(SQLITE_CPPFLAGS)" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
