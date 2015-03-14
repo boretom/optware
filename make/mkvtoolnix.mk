@@ -21,15 +21,15 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 MKVTOOLNIX_SITE=http://bunkus.org/videotools/mkvtoolnix/sources
-MKVTOOLNIX_VERSION ?= 4.2.0
-MKVTOOLNIX_SOURCE=mkvtoolnix-$(MKVTOOLNIX_VERSION).tar.bz2
+MKVTOOLNIX_VERSION ?= 7.7.0
+MKVTOOLNIX_SOURCE=mkvtoolnix-$(MKVTOOLNIX_VERSION).tar.xz
 MKVTOOLNIX_DIR=mkvtoolnix-$(MKVTOOLNIX_VERSION)
-MKVTOOLNIX_UNZIP=bzcat
+MKVTOOLNIX_UNZIP=xzcat
 MKVTOOLNIX_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 MKVTOOLNIX_DESCRIPTION=A set of tools to create, alter and inspect Matroska files
 MKVTOOLNIX_SECTION=multimedia
 MKVTOOLNIX_PRIORITY=optional
-MKVTOOLNIX_DEPENDS=boost-regex, expat, file, flac, libebml, libmatroska, libogg, libvorbis, lzo
+MKVTOOLNIX_DEPENDS=boost-regex, boost-system, boost-filesystem, libcurl, expat, file, flac, libebml, libmatroska, libogg, libvorbis, lzo
 ifeq (enable, $(GETTEXT_NLS))
 MKVTOOLNIX_DEPENDS +=, gettext
 endif
@@ -111,7 +111,7 @@ mkvtoolnix-source: $(DL_DIR)/$(MKVTOOLNIX_SOURCE) $(MKVTOOLNIX_PATCHES)
 # shown below to make various patches to it.
 #
 $(MKVTOOLNIX_BUILD_DIR)/.configured: $(DL_DIR)/$(MKVTOOLNIX_SOURCE) $(MKVTOOLNIX_PATCHES) make/mkvtoolnix.mk
-	$(MAKE) boost-stage bzip2-stage expat-stage file-stage flac-stage zlib-stage
+	$(MAKE) boost-stage bzip2-stage expat-stage file-stage flac-stage zlib-stage libcurl-stage
 	$(MAKE) libebml-stage libmatroska-stage libogg-stage libvorbis-stage lzo-stage
 ifeq (enable, $(GETTEXT_NLS))
 	$(MAKE) gettext-stage
@@ -132,6 +132,7 @@ endif
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MKVTOOLNIX_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MKVTOOLNIX_LDFLAGS)" \
+		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig/" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -152,7 +153,8 @@ mkvtoolnix-unpack: $(MKVTOOLNIX_BUILD_DIR)/.configured
 #
 $(MKVTOOLNIX_BUILD_DIR)/.built: $(MKVTOOLNIX_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	(cd $(@D); \
+		./drake)
 	touch $@
 
 #
@@ -165,7 +167,9 @@ mkvtoolnix: $(MKVTOOLNIX_BUILD_DIR)/.built
 #
 $(MKVTOOLNIX_BUILD_DIR)/.staged: $(MKVTOOLNIX_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	(cd $(@D); \
+		./drake DESTDIR=$(STAGING_DIR) install \
+	)
 	touch $@
 
 mkvtoolnix-stage: $(MKVTOOLNIX_BUILD_DIR)/.staged
@@ -203,7 +207,7 @@ $(MKVTOOLNIX_IPK_DIR)/CONTROL/control:
 #
 $(MKVTOOLNIX_IPK): $(MKVTOOLNIX_BUILD_DIR)/.built
 	rm -rf $(MKVTOOLNIX_IPK_DIR) $(BUILD_DIR)/mkvtoolnix_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(MKVTOOLNIX_BUILD_DIR) DESTDIR=$(MKVTOOLNIX_IPK_DIR) install
+	(cd $(MKVTOOLNIX_BUILD_DIR); ./drake DESTDIR=$(MKVTOOLNIX_IPK_DIR) install)
 	$(STRIP_COMMAND) $(MKVTOOLNIX_IPK_DIR)/opt/bin/mkv*
 	$(MAKE) $(MKVTOOLNIX_IPK_DIR)/CONTROL/control
 	echo $(MKVTOOLNIX_CONFFILES) | sed -e 's/ /\n/g' > $(MKVTOOLNIX_IPK_DIR)/CONTROL/conffiles

@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 BOOST_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/boost
-BOOST_VERSION=1_45_0
+BOOST_VERSION=1_46_1
 BOOST_SOURCE=boost_$(BOOST_VERSION).tar.gz
 BOOST_DIR=boost_$(BOOST_VERSION)
 BOOST_UNZIP=zcat
