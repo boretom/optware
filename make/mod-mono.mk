@@ -140,7 +140,7 @@ mod-mono-unpack: $(MOD_MONO_BUILD_DIR)/.configured
 $(MOD_MONO_BUILD_DIR)/.built: $(MOD_MONO_BUILD_DIR)/.configured
 	rm -f $@D
 	$(MAKE) -C $(@D)
-	touch $(@D)
+	touch $@
 
 #
 # This is the build convenience target.
